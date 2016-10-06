@@ -1,13 +1,3 @@
 inoutput.sln.DotSettings.user
-Business/obj/Debug/*
-BusinessInterface/obj/Debug/*
-BusinessTest/obj/Debug/*
-Component/obj/Debug/*
-ComponentTest/obj/Debug/*
-DAL/obj/Debug/*
-DALInterface/obj/Debug/*
-DALTest/obj/Debug/*
-Entity/obj/Debug/*
-Helper/obj/Debug/*
-HelperTest/obj/Debug/*
+*.cache
 inoutput/obj/x86/Debug/*
