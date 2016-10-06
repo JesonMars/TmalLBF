@@ -1,0 +1,8 @@
+D:\g\outsource\inoutput\DALTest\bin\Debug\DALTest.dll
+D:\g\outsource\inoutput\DALTest\bin\Debug\DALTest.pdb
+D:\g\outsource\inoutput\Bin\DALTest.dll.config
+D:\g\outsource\inoutput\Bin\DALTest.dll
+D:\g\outsource\inoutput\Bin\DALTest.pdb
+D:\g\outsource\inoutput\DALTest\obj\Debug\DALTest.dll
+D:\g\outsource\inoutput\DALTest\obj\Debug\DALTest.pdb
+D:\g\outsource\inoutput\DALTest\obj\Debug\DALTest.csprojResolveAssemblyReference.cache

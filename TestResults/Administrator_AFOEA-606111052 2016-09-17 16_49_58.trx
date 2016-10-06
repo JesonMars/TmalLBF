@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="a99ee2a8-8224-41f2-aa88-afd757bd5bcf" name="Administrator@AFOEA-606111052 2016-09-17 16:49:58" runUser="AFOEA-606111052\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="本地" id="ab97d22b-1b6e-451d-a886-17122a02678c">
+    <Description>这些设置为本地测试运行的默认测试设置。</Description>
+    <Deployment enabled="false" runDeploymentRoot="Administrator_AFOEA-606111052 2016-09-17 16_49_58">
+      <DeploymentItem filename="D:\g\outsource\inoutput\Helper\bin\Debug\Helper.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2016-09-17T16:49:58.9030398+08:00" queuing="2016-09-17T16:50:01.4752823+08:00" start="2016-09-17T16:50:01.6653066+08:00" finish="2016-09-17T16:50:37.3997384+08:00" />
+  <ResultSummary outcome="Error">
+    <Counters total="1" executed="1" error="0" failed="0" timeout="0" aborted="1" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="AFOEA-606111052" outcome="Error" timestamp="2016-09-17T16:50:37.3247388+08:00">
+        <Text>测试宿主进程意外退出。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TestMethod1" storage="d:\g\outsource\inoutput\helpertest\bin\debug\helpertest.dll" id="fceb6ddd-292d-e15a-8585-ced5659e52b1">
+      <Execution id="6a91bfb9-e107-4e3d-a41d-d86245aa0b0d" />
+      <TestMethod codeBase="D:/g/outsource/inoutput/HelperTest/bin/Debug/HelperTest.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="HelperTest.UnitTest1, HelperTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestMethod1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="fceb6ddd-292d-e15a-8585-ced5659e52b1" executionId="6a91bfb9-e107-4e3d-a41d-d86245aa0b0d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="6a91bfb9-e107-4e3d-a41d-d86245aa0b0d" testId="fceb6ddd-292d-e15a-8585-ced5659e52b1" testName="TestMethod1" computerName="AFOEA-606111052" duration="00:00:35.5594154" startTime="2016-09-17T16:50:01.8403230+08:00" endTime="2016-09-17T16:50:37.3997384+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Aborted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a91bfb9-e107-4e3d-a41d-d86245aa0b0d">
+    </UnitTestResult>
+  </Results>
+</TestRun>

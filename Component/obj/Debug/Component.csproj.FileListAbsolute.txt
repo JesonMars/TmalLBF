@@ -1,0 +1,7 @@
+D:\g\outsource\inoutput\Component\bin\Debug\Component.dll
+D:\g\outsource\inoutput\Component\bin\Debug\Component.pdb
+D:\g\outsource\inoutput\Bin\Component.dll
+D:\g\outsource\inoutput\Bin\Component.pdb
+D:\g\outsource\inoutput\Component\obj\Debug\Component.dll
+D:\g\outsource\inoutput\Component\obj\Debug\Component.pdb
+D:\g\outsource\inoutput\Component\obj\Debug\Component.csprojResolveAssemblyReference.cache

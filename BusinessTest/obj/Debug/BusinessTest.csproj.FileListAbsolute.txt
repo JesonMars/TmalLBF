@@ -1,0 +1,13 @@
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\BusinessTest.dll
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\BusinessTest.pdb
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\BusinessInterface.dll
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\Component.dll
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\BusinessInterface.pdb
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\Component.pdb
+D:\g\outsource\inoutput\BusinessTest\bin\Debug\BusinessTest.dll.config
+D:\g\outsource\inoutput\Bin\BusinessTest.dll.config
+D:\g\outsource\inoutput\Bin\BusinessTest.dll
+D:\g\outsource\inoutput\Bin\BusinessTest.pdb
+D:\g\outsource\inoutput\BusinessTest\obj\Debug\BusinessTest.csprojResolveAssemblyReference.cache
+D:\g\outsource\inoutput\BusinessTest\obj\Debug\BusinessTest.dll
+D:\g\outsource\inoutput\BusinessTest\obj\Debug\BusinessTest.pdb

@@ -1,0 +1,4 @@
+D:\g\outsource\inoutput\IDAL\bin\Debug\IDAL.dll
+D:\g\outsource\inoutput\IDAL\bin\Debug\IDAL.pdb
+D:\g\outsource\inoutput\IDAL\obj\Debug\IDAL.dll
+D:\g\outsource\inoutput\IDAL\obj\Debug\IDAL.pdb

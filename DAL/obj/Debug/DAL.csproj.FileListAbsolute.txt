@@ -1,0 +1,9 @@
+D:\g\outsource\inoutput\DAL\bin\Debug\DAL.dll
+D:\g\outsource\inoutput\DAL\bin\Debug\DAL.pdb
+D:\g\outsource\inoutput\DAL\bin\Debug\Entity.dll
+D:\g\outsource\inoutput\DAL\bin\Debug\Entity.pdb
+D:\g\outsource\inoutput\Bin\DAL.dll
+D:\g\outsource\inoutput\Bin\DAL.pdb
+D:\g\outsource\inoutput\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\g\outsource\inoutput\DAL\obj\Debug\DAL.dll
+D:\g\outsource\inoutput\DAL\obj\Debug\DAL.pdb

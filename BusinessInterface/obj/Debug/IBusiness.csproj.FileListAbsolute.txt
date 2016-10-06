@@ -1,0 +1,7 @@
+D:\g\outsource\inoutput\IBusiness\bin\Debug\IBusiness.dll
+D:\g\outsource\inoutput\IBusiness\bin\Debug\IBusiness.pdb
+D:\g\outsource\inoutput\IBusiness\obj\Debug\IBusiness.csprojResolveAssemblyReference.cache
+D:\g\outsource\inoutput\IBusiness\obj\Debug\IBusiness.dll
+D:\g\outsource\inoutput\IBusiness\obj\Debug\IBusiness.pdb
+D:\g\outsource\inoutput\IBusiness\bin\Debug\Entity.dll
+D:\g\outsource\inoutput\IBusiness\bin\Debug\Entity.pdb

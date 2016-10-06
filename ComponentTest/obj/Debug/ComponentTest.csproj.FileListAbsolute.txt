@@ -1,0 +1,15 @@
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\ComponentTest.dll.config
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\ComponentTest.dll
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\ComponentTest.pdb
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\BusinessInterface.dll
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\Component.dll
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\Entity.dll
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\BusinessInterface.pdb
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\Component.pdb
+D:\g\outsource\inoutput\ComponentTest\bin\Debug\Entity.pdb
+D:\g\outsource\inoutput\Bin\ComponentTest.dll.config
+D:\g\outsource\inoutput\Bin\ComponentTest.dll
+D:\g\outsource\inoutput\Bin\ComponentTest.pdb
+D:\g\outsource\inoutput\ComponentTest\obj\Debug\ComponentTest.csprojResolveAssemblyReference.cache
+D:\g\outsource\inoutput\ComponentTest\obj\Debug\ComponentTest.dll
+D:\g\outsource\inoutput\ComponentTest\obj\Debug\ComponentTest.pdb

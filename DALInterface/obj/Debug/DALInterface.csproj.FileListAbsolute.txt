@@ -1,0 +1,7 @@
+D:\g\outsource\inoutput\DALInterface\bin\Debug\DALInterface.dll
+D:\g\outsource\inoutput\DALInterface\bin\Debug\DALInterface.pdb
+D:\g\outsource\inoutput\Bin\DALInterface.dll
+D:\g\outsource\inoutput\Bin\DALInterface.pdb
+D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.dll
+D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.pdb
+D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.csprojResolveAssemblyReference.cache
