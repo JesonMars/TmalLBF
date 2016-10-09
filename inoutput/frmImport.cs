@@ -62,7 +62,7 @@ namespace inoutput
         {
             var fileDialog = (OpenFileDialog) sender;
             var fileName = fileDialog.FileName;
-            var extension = FileHelper.GetFileExtension(fileName);
+            var extension =FileHelper.GetFileExtension(fileName);
             var shouldExtension = ConfigurationSettings.AppSettings.Get("exceltype");
 
             if (!shouldExtension.Contains(extension))

@@ -4,4 +4,3 @@ D:\g\outsource\inoutput\Bin\Entity.dll
 D:\g\outsource\inoutput\Bin\Entity.pdb
 D:\g\outsource\inoutput\Entity\obj\Debug\Entity.dll
 D:\g\outsource\inoutput\Entity\obj\Debug\Entity.pdb
-D:\g\outsource\inoutput\Entity\obj\Debug\Entity.csprojResolveAssemblyReference.cache

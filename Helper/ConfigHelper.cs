@@ -26,5 +26,11 @@ namespace Helper
         {
             return GetAppSetting("EntitySuffix");
         }
+
+        public static string GetYouDaoUrl()
+        {
+            var youdaourl = GetAppSetting("youdaourl");
+            return youdaourl.Replace("|", "&");
+        }
     }
 }

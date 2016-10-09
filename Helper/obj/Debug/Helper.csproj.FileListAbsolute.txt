@@ -1,6 +1,8 @@
 D:\g\outsource\inoutput\Helper\bin\Debug\Helper.dll
 D:\g\outsource\inoutput\Helper\bin\Debug\Helper.pdb
-D:\g\outsource\inoutput\Helper\bin\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\g\outsource\inoutput\Helper\bin\Debug\Newtonsoft.Json.dll
+D:\g\outsource\inoutput\Bin\Helper.dll
+D:\g\outsource\inoutput\Bin\Helper.pdb
 D:\g\outsource\inoutput\Helper\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
 D:\g\outsource\inoutput\Helper\obj\Debug\Helper.csproj.ResolveComReference.cache
 D:\g\outsource\inoutput\Helper\obj\Debug\Helper.dll
