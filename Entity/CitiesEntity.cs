@@ -22,6 +22,9 @@ namespace Entity
         /// city of english
         /// </summary>
         public string Citye { get; set; }
-
+        /// <summary>
+        /// chinese postcode of the place
+        /// </summary>
+        public string PostCode { get; set; }
     }
 }

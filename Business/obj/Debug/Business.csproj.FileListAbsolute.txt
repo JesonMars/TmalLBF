@@ -9,3 +9,8 @@ D:\g\outsource\inoutput\Bin\Business.pdb
 D:\g\outsource\inoutput\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
 D:\g\outsource\inoutput\Business\obj\Debug\Business.dll
 D:\g\outsource\inoutput\Business\obj\Debug\Business.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Bin\Business.dll
+D:\g\outsource\TmallLBF\TmalLBF\Bin\Business.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\g\outsource\TmallLBF\TmalLBF\Business\obj\Debug\Business.dll
+D:\g\outsource\TmallLBF\TmalLBF\Business\obj\Debug\Business.pdb

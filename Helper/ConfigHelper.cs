@@ -32,5 +32,11 @@ namespace Helper
             var youdaourl = GetAppSetting("youdaourl");
             return youdaourl.Replace("|", "&");
         }
+
+        public static string GetExcelExtesion()
+        {
+            var exten=GetAppSetting("exceltype");
+            return exten;
+        }
     }
 }

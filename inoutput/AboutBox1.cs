@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace inoutput
 {
-    partial class AboutBox1 : Form
+    partial class frmAbout : Form
     {
-        public AboutBox1()
+        public frmAbout()
         {
             InitializeComponent();
             this.Text = String.Format("关于 {0}", AssemblyTitle);

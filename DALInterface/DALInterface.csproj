@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IArcancilDal.cs" />
+    <Compile Include="ICatalogueDal.cs" />
     <Compile Include="ICityDal.cs" />
     <Compile Include="ICrudBase.cs" />
     <Compile Include="IFtpDal.cs" />

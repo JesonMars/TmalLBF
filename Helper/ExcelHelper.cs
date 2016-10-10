@@ -145,7 +145,7 @@ namespace Helper
             var extension = FileHelper.GetFileExtension(filePath);
             var shouldExtension = ConfigurationSettings.AppSettings.Get("exceltype");
 
-            if (!shouldExtension.Contains(extension))
+            if (string.IsNullOrEmpty(extension) || !shouldExtension.Contains(extension))
             {
                 return false;
             }

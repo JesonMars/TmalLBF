@@ -11,3 +11,11 @@ D:\g\outsource\inoutput\HelperTest\obj\Debug\Interop.Microsoft.Office.Interop.Ex
 D:\g\outsource\inoutput\HelperTest\obj\Debug\HelperTest.csproj.ResolveComReference.cache
 D:\g\outsource\inoutput\HelperTest\obj\Debug\HelperTest.dll
 D:\g\outsource\inoutput\HelperTest\obj\Debug\HelperTest.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Bin\HelperTest.dll.config
+D:\g\outsource\TmallLBF\TmalLBF\Bin\HelperTest.dll
+D:\g\outsource\TmallLBF\TmalLBF\Bin\HelperTest.pdb
+D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.csprojResolveAssemblyReference.cache
+D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.csproj.ResolveComReference.cache
+D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.dll
+D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.pdb

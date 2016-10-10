@@ -7,3 +7,8 @@ D:\g\outsource\inoutput\Bin\DAL.pdb
 D:\g\outsource\inoutput\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 D:\g\outsource\inoutput\DAL\obj\Debug\DAL.dll
 D:\g\outsource\inoutput\DAL\obj\Debug\DAL.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Bin\DAL.dll
+D:\g\outsource\TmallLBF\TmalLBF\Bin\DAL.pdb
+D:\g\outsource\TmallLBF\TmalLBF\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\g\outsource\TmallLBF\TmalLBF\DAL\obj\Debug\DAL.dll
+D:\g\outsource\TmallLBF\TmalLBF\DAL\obj\Debug\DAL.pdb

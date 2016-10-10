@@ -36,5 +36,13 @@ namespace inoutput
             frm.Show();
         }
 
+        private void muMakeDestinationFile_Click(object sender, EventArgs e)
+        {
+            FrmMakeDestinationFile frmMakeDestinationFile=new FrmMakeDestinationFile();
+            frmMakeDestinationFile.MdiParent = this;
+            frmMakeDestinationFile.Show();
+        }
+
+
     }
 }

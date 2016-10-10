@@ -30,6 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSelectCatalogue = new System.Windows.Forms.Button();
+            this.btnImportCatalogue = new System.Windows.Forms.Button();
+            this.txtImportCatalogue = new System.Windows.Forms.TextBox();
             this.gbArcancil = new System.Windows.Forms.GroupBox();
             this.btnSelectArcancil = new System.Windows.Forms.Button();
             this.btnImportArcancil = new System.Windows.Forms.Button();
@@ -44,6 +48,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tmProgress = new System.Windows.Forms.Timer(this.components);
             this.pnlMain.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.gbArcancil.SuspendLayout();
             this.statusBarMain.SuspendLayout();
             this.gbCity.SuspendLayout();
@@ -53,6 +58,7 @@
             // 
             this.pnlMain.AutoSize = true;
             this.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlMain.Controls.Add(this.groupBox1);
             this.pnlMain.Controls.Add(this.gbArcancil);
             this.pnlMain.Controls.Add(this.statusBarMain);
             this.pnlMain.Controls.Add(this.gbCity);
@@ -60,8 +66,48 @@
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(0, 0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(645, 430);
+            this.pnlMain.Size = new System.Drawing.Size(647, 579);
             this.pnlMain.TabIndex = 4;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnSelectCatalogue);
+            this.groupBox1.Controls.Add(this.btnImportCatalogue);
+            this.groupBox1.Controls.Add(this.txtImportCatalogue);
+            this.groupBox1.Location = new System.Drawing.Point(29, 366);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(513, 113);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "产品分类初始化";
+            // 
+            // btnSelectCatalogue
+            // 
+            this.btnSelectCatalogue.Location = new System.Drawing.Point(336, 47);
+            this.btnSelectCatalogue.Name = "btnSelectCatalogue";
+            this.btnSelectCatalogue.Size = new System.Drawing.Size(69, 23);
+            this.btnSelectCatalogue.TabIndex = 2;
+            this.btnSelectCatalogue.Text = "选择";
+            this.btnSelectCatalogue.UseVisualStyleBackColor = true;
+            // 
+            // btnImportCatalogue
+            // 
+            this.btnImportCatalogue.Location = new System.Drawing.Point(407, 47);
+            this.btnImportCatalogue.Name = "btnImportCatalogue";
+            this.btnImportCatalogue.Size = new System.Drawing.Size(70, 23);
+            this.btnImportCatalogue.TabIndex = 1;
+            this.btnImportCatalogue.Text = "导入";
+            this.btnImportCatalogue.UseVisualStyleBackColor = true;
+            // 
+            // txtImportCatalogue
+            // 
+            this.txtImportCatalogue.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.txtImportCatalogue.Location = new System.Drawing.Point(14, 48);
+            this.txtImportCatalogue.Name = "txtImportCatalogue";
+            this.txtImportCatalogue.ReadOnly = true;
+            this.txtImportCatalogue.Size = new System.Drawing.Size(322, 21);
+            this.txtImportCatalogue.TabIndex = 0;
+            this.txtImportCatalogue.Text = "请选择分类文件";
             // 
             // gbArcancil
             // 
@@ -108,9 +154,9 @@
             this.statusBarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripPbMain,
             this.toolStripSlMain});
-            this.statusBarMain.Location = new System.Drawing.Point(0, 404);
+            this.statusBarMain.Location = new System.Drawing.Point(0, 553);
             this.statusBarMain.Name = "statusBarMain";
-            this.statusBarMain.Size = new System.Drawing.Size(641, 22);
+            this.statusBarMain.Size = new System.Drawing.Size(643, 22);
             this.statusBarMain.TabIndex = 1;
             this.statusBarMain.Text = "Main页面状态";
             // 
@@ -182,7 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 430);
+            this.ClientSize = new System.Drawing.Size(647, 579);
             this.Controls.Add(this.pnlMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -191,6 +237,8 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.gbArcancil.ResumeLayout(false);
             this.gbArcancil.PerformLayout();
             this.statusBarMain.ResumeLayout(false);
@@ -218,6 +266,10 @@
         private System.Windows.Forms.Button btnImportArcancil;
         private System.Windows.Forms.TextBox txtImportArcancil;
         private System.Windows.Forms.Timer tmProgress;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnSelectCatalogue;
+        private System.Windows.Forms.Button btnImportCatalogue;
+        private System.Windows.Forms.TextBox txtImportCatalogue;
 
 
 

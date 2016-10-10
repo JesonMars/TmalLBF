@@ -4,3 +4,7 @@ D:\g\outsource\inoutput\Bin\Component.dll
 D:\g\outsource\inoutput\Bin\Component.pdb
 D:\g\outsource\inoutput\Component\obj\Debug\Component.dll
 D:\g\outsource\inoutput\Component\obj\Debug\Component.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Bin\Component.dll
+D:\g\outsource\TmallLBF\TmalLBF\Bin\Component.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Component\obj\Debug\Component.dll
+D:\g\outsource\TmallLBF\TmalLBF\Component\obj\Debug\Component.pdb

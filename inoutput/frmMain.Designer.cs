@@ -30,8 +30,8 @@ namespace inoutput
         /// </summary>
         private void InitializeComponent()
         {
-            this.tsmlMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmlFunc = new System.Windows.Forms.ToolStripMenuItem();
+            this.muMakeDestinationFile = new System.Windows.Forms.ToolStripMenuItem();
             this.muFtp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmlAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain = new System.Windows.Forms.MenuStrip();
@@ -39,19 +39,21 @@ namespace inoutput
             this.msMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tsmlMenu
-            // 
-            this.tsmlMenu.Name = "tsmlMenu";
-            this.tsmlMenu.Size = new System.Drawing.Size(44, 21);
-            this.tsmlMenu.Text = "菜单";
-            // 
             // tsmlFunc
             // 
             this.tsmlFunc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.muMakeDestinationFile,
             this.muFtp});
             this.tsmlFunc.Name = "tsmlFunc";
             this.tsmlFunc.Size = new System.Drawing.Size(44, 21);
             this.tsmlFunc.Text = "功能";
+            // 
+            // muMakeDestinationFile
+            // 
+            this.muMakeDestinationFile.Name = "muMakeDestinationFile";
+            this.muMakeDestinationFile.Size = new System.Drawing.Size(152, 22);
+            this.muMakeDestinationFile.Text = "生成最终文件";
+            this.muMakeDestinationFile.Click += new System.EventHandler(this.muMakeDestinationFile_Click);
             // 
             // muFtp
             // 
@@ -69,7 +71,6 @@ namespace inoutput
             // msMain
             // 
             this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmlMenu,
             this.tsmlFunc,
             this.tsmlAbout});
             this.msMain.Location = new System.Drawing.Point(0, 0);
@@ -96,17 +97,17 @@ namespace inoutput
             this.msMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-            
+
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolStripMenuItem tsmlMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmlFunc;
         private System.Windows.Forms.ToolStripMenuItem tsmlAbout;
         private System.Windows.Forms.MenuStrip msMain;
         private System.Windows.Forms.ToolStripMenuItem muFtp;
         private System.Windows.Forms.OpenFileDialog fbDialogMain;
+        private System.Windows.Forms.ToolStripMenuItem muMakeDestinationFile;
 
     }
 }

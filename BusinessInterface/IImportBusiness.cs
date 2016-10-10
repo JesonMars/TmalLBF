@@ -8,5 +8,9 @@ namespace BusinessInterface
     {
         bool ImportCitiesFromExcel(string filePath);
         bool ImportArcancilFromExcel(string filePath);
+        bool ImportCatalogueFromExcel(string filePath);
     }
+
+
+
 }

@@ -16,7 +16,7 @@ namespace DAL
             string sqlBuilder = "";
             foreach (var arcancil in arcancils)
             {
-                sqlBuilder = string.Format(@"insert into arcancil(reference,products) values('{0}','{1}');", arcancil.Reference,arcancil.Products);
+                sqlBuilder = string.Format(@"insert into arcancil(company,brand,reference,produits) values('{0}','{1}','{2}','{3}');",arcancil.Company,arcancil.Brand,arcancil.Reference,arcancil.Produits);
                 DalAccessHelper.ExecuteNonQuery(sqlBuilder.ToString(), null);
                 result += 1;
             }

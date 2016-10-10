@@ -24,6 +24,9 @@ namespace inoutput
             this.btnSelectFile.Click +=new EventHandler(this.btnSelectFile_Click);
             this.btnSelectArcancil.Click+=new EventHandler(this.btnSelectArcancil_Click);
             this.btnImportArcancil.Click+=new EventHandler(this.btnImportArcancil_Click);
+            this.btnSelectCatalogue.Click += new EventHandler(this.btnSelectCatalogue_Click);
+            this.btnImportCatalogue.Click += new EventHandler(this.btnImportCatalogue_Click);
+            
             this.SizeChanged+=new EventHandler(this.frmImport_SizeChanged);
         }
 
@@ -63,7 +66,7 @@ namespace inoutput
             var fileDialog = (OpenFileDialog) sender;
             var fileName = fileDialog.FileName;
             var extension =FileHelper.GetFileExtension(fileName);
-            var shouldExtension = ConfigurationSettings.AppSettings.Get("exceltype");
+            var shouldExtension = ConfigHelper.GetExcelExtesion();
 
             if (!shouldExtension.Contains(extension))
             {
@@ -185,6 +188,65 @@ namespace inoutput
             }
         }
 
+        /// <summary>
+        /// the select arcancil click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSelectCatalogue_Click(object sender, EventArgs e)
+        {
+            var file = this.OpenFileDialog();
+            if (!string.IsNullOrEmpty(file))
+            {
+                this.txtImportCatalogue.Text = file;
+            }
+            else
+            {
+                MessageBox.Show("您未选取任何文件！");
+            }
+        }
+
+        /// <summary>
+        /// the import arcancil click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnImportCatalogue_Click(object sender, EventArgs e)
+        {
+            //first disabled the component
+            DisableComponent();
+            //check the file
+            var file = this.txtImportCatalogue.Text;
+            if (string.IsNullOrEmpty(file) || file == "请选择产品分类文件")
+            {
+                MessageBox.Show("请选择产品分类文件后再进行导入操作");
+                EnableComponent();
+                return;
+            }
+
+            PrograssInit("正在导入产品分类文件...");
+            using (BackgroundWorker bw = new BackgroundWorker())
+            {
+                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BW_RunWorkerCompletedEventArgs);
+
+                bw.DoWork += new DoWorkEventHandler((object o, DoWorkEventArgs d) =>
+                {
+                    var business = Factory.Instance().GetService<IImportBusiness>();
+                    var result = business.ImportCatalogueFromExcel(file);
+                    if (result)
+                    {
+                        MessageBox.Show("产品文件分类导入成功！");
+                    }
+                    else
+                    {
+                        MessageBox.Show("产品文件导入分类失败，请重新操作！");
+                    }
+
+                });
+                bw.RunWorkerAsync();
+            }
+        }
+
         private string OpenFileDialog()
         {
             var fileDialog = new OpenFileDialog();
@@ -200,6 +262,8 @@ namespace inoutput
             btnSelectFile.Enabled = true;
             btnImportArcancil.Enabled = true;
             btnSelectArcancil.Enabled = true;
+            btnImportCatalogue.Enabled = true;
+            btnSelectCatalogue.Enabled = true;
         }
 
         private void DisableComponent()
@@ -209,6 +273,8 @@ namespace inoutput
             btnSelectFile.Enabled = false;
             btnImportArcancil.Enabled = false;
             btnSelectArcancil.Enabled = false;
+            btnImportCatalogue.Enabled = false;
+            btnSelectCatalogue.Enabled = false;
         }
 
         /// <summary>

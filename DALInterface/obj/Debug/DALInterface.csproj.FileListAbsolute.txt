@@ -5,3 +5,8 @@ D:\g\outsource\inoutput\Bin\DALInterface.pdb
 D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.csprojResolveAssemblyReference.cache
 D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.dll
 D:\g\outsource\inoutput\DALInterface\obj\Debug\DALInterface.pdb
+D:\g\outsource\TmallLBF\TmalLBF\Bin\DALInterface.dll
+D:\g\outsource\TmallLBF\TmalLBF\Bin\DALInterface.pdb
+D:\g\outsource\TmallLBF\TmalLBF\DALInterface\obj\Debug\DALInterface.csprojResolveAssemblyReference.cache
+D:\g\outsource\TmallLBF\TmalLBF\DALInterface\obj\Debug\DALInterface.dll
+D:\g\outsource\TmallLBF\TmalLBF\DALInterface\obj\Debug\DALInterface.pdb

@@ -27,5 +27,13 @@ namespace ComponentTest
             var result = factory.ImportArcancilFromExcel(@"\\vmware-host\Shared Folders\桌面\Fwd_ 用户订单文件开发\arcancil20productlist.xlsx");
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void TestImportCatalogueFromExcel()
+        {
+            var factory = Factory.Instance().GetService<IImportBusiness>();
+            var result = factory.ImportCatalogueFromExcel(@"\\vmware-host\Shared Folders\桌面\Archive\LBF _Catalogue Produits Nom de la Marque Cliente V02.xlsx");
+            Assert.IsTrue(result);
+        }
     }
 }

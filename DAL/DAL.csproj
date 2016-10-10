@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcancilDal.cs" />
+    <Compile Include="CatalogueDal.cs" />
     <Compile Include="CityDal.cs" />
     <Compile Include="CrudBase.cs" />
     <Compile Include="FtpDal.cs" />
