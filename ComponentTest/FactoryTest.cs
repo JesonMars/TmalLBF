@@ -28,7 +28,7 @@ namespace ComponentTest
         {
             var result = Factory.Instance();
             var testentity=result.GetService<IBaseBusiness>();
-            Console.Write(testentity.test("get service success"));
+            //Console.Write(testentity.test("get service success"));
             Assert.IsNotNull(testentity);
             Assert.IsInstanceOfType(testentity, typeof(IBaseBusiness));
         }
@@ -38,7 +38,7 @@ namespace ComponentTest
         {
             var result = Factory.Instance();
             var testentity = result.GetServiceByLoad<IBaseBusiness>();
-            Console.Write(testentity.test("get service load success"));
+           // Console.Write(testentity.test("get service load success"));
             Assert.IsNotNull(testentity);
             Assert.IsInstanceOfType(testentity, typeof(IBaseBusiness));
         }

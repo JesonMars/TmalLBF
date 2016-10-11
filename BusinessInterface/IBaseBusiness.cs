@@ -6,6 +6,5 @@ namespace BusinessInterface
 {
     public interface IBaseBusiness
     {
-        string test(string test);
     }
 }

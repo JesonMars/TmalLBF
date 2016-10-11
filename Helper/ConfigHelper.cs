@@ -38,5 +38,12 @@ namespace Helper
             var exten=GetAppSetting("exceltype");
             return exten;
         }
+
+        public static string GetDestFileName()
+        {
+            var name =new StringBuilder(GetAppSetting("destfilename"));
+            name.Append(DateTime.Now.ToString("Mddyyyy"));
+            return name.ToString();
+        }
     }
 }

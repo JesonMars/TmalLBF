@@ -25,6 +25,13 @@ namespace Helper
             Sheets = this.Workbook == null ? null : this.Workbook.Sheets;
         }
 
+        public void InitExcel(string filePath)
+        {
+            Application = new Application();
+            Workbook = this.Application.Workbooks.Open(filePath);
+            Sheets = this.Workbook == null ? null : this.Workbook.Sheets;
+        }
+
         public List<List<string>> GetAllSheetData()
         {
             var dt = new List<List<string>>();
