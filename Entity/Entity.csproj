@@ -47,6 +47,8 @@
     <Compile Include="FtpConfigEntity.cs" />
     <Compile Include="CatalogueEntity.cs" />
     <Compile Include="MakeDestEntity.cs" />
+    <Compile Include="OrderDetailEntity.cs" />
+    <Compile Include="OrderEntity.cs" />
     <Compile Include="ProductsEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
