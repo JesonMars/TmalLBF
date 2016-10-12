@@ -45,5 +45,10 @@ namespace Helper
             name.Append(DateTime.Now.ToString("Mddyyyy"));
             return name.ToString();
         }
+        public static string GetPostCodeRegex()
+        {
+            var name = new StringBuilder(GetAppSetting("postcoderegex"));
+            return name.ToString();
+        }
     }
 }

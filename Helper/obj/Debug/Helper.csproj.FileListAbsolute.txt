@@ -15,3 +15,9 @@ D:\g\outsource\TmallLBF\TmalLBF\Helper\obj\Debug\Interop.Microsoft.Office.Intero
 D:\g\outsource\TmallLBF\TmalLBF\Helper\obj\Debug\Helper.csproj.ResolveComReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\Helper\obj\Debug\Helper.dll
 D:\g\outsource\TmallLBF\TmalLBF\Helper\obj\Debug\Helper.pdb
+E:\outsource\TmalLBF\Helper\obj\Debug\Helper.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\Helper\obj\Debug\Helper.csproj.ResolveComReference.cache
+E:\outsource\TmalLBF\Helper\obj\Debug\Helper.dll
+E:\outsource\TmalLBF\Helper\obj\Debug\Helper.pdb
+E:\outsource\TmalLBF\Bin\Helper.dll
+E:\outsource\TmalLBF\Bin\Helper.pdb

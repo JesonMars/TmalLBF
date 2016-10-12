@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Component;
 using DALInterface;
 using Entity;
@@ -47,23 +48,31 @@ namespace Business.DestMake
             var excelhelper=new ExcelHelper(entity.OrderListFile);
             var orderlistdata = excelhelper.GetAllSheetData();
             var orders=new List<OrderEntity>();
+            var regex = ConfigHelper.GetPostCodeRegex();
             orderlistdata.ForEach(x=>
             {
                 var order=new OrderEntity();
-                order.OrderId = x[0];
-                order.DateOrder = x[17];
-                order.ShippingFees = x[4];
-                order.AddressDetails =string.IsNullOrEmpty(x[36])?x[36]:x[13];
-                order.CDeliveryAddress = string.IsNullOrEmpty(x[36]) ? x[36] : x[13];
+                order.OrderId = x[0]; //订单号
+                order.DateOrder = x[17];//订单创建时间
+                order.ShippingFees = x[4];//运费
+                order.AddressDetails =x[13];//收获地址
+                order.CDeliveryAddress = x[13];//收获地址
                 var addresss = order.AddressDetails.Split(' ');
-                order.City = addresss[1];
-                order.ProvinceAutonomousRegion = addresss[0];
-                order.ConsigneePhoneNumber = x[16];
-                order.Country = addresss[1]=="海外"?"中国"+addresss[0]:"CN";
-                order.CountyDistrict = addresss[2];
-                order.PostCode = addresss[addresss.Length - 1].Substring(addresss[addresss.Length - 1].Length-8,8);
-                order.SettlementAmount = x[8];
-                order.RecipientName = x[12];
+                order.City = addresss[1];//城市名称，默认的是收获地址的第一个
+                order.ProvinceAutonomousRegion = addresss[0];//省份名称
+                order.ConsigneePhoneNumber = x[16];//收货人联系电话
+                order.Country = addresss[1]="CN";//国家
+                order.CountyDistrict = TranslateHelper.YouDaoC2E(addresss[2]);//县/镇/区v
+                order.SettlementAmount = x[8];//实际付款金额
+                order.RecipientName = TranslateHelper.YouDaoC2E(x[12]);//收款人英文姓名
+
+                var postmatch = Regex.Match(order.AddressDetails, regex);
+                var postcode = "";
+                if (postmatch != null) {
+                    postcode = postmatch.Value;
+                }
+                order.PostCode =postcode.Replace("(","").Replace(")","");//邮政编码
+                order.AddressDetails = TranslateHelper.YouDaoC2E(order.AddressDetails.Replace(postcode,""));//详细地址
             });
 #endregion
 

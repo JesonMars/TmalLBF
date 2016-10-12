@@ -17,3 +17,9 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\BusinessTest.pdb
 D:\g\outsource\TmallLBF\TmalLBF\BusinessTest\obj\Debug\BusinessTest.csprojResolveAssemblyReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\BusinessTest\obj\Debug\BusinessTest.dll
 D:\g\outsource\TmallLBF\TmalLBF\BusinessTest\obj\Debug\BusinessTest.pdb
+E:\outsource\TmalLBF\BusinessTest\obj\Debug\BusinessTest.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\BusinessTest\obj\Debug\BusinessTest.dll
+E:\outsource\TmalLBF\BusinessTest\obj\Debug\BusinessTest.pdb
+E:\outsource\TmalLBF\Bin\BusinessTest.dll.config
+E:\outsource\TmalLBF\Bin\BusinessTest.dll
+E:\outsource\TmalLBF\Bin\BusinessTest.pdb

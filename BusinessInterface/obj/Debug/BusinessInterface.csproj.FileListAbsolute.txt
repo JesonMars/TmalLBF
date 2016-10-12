@@ -12,3 +12,8 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\BusinessInterface.pdb
 D:\g\outsource\TmallLBF\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.csprojResolveAssemblyReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.dll
 D:\g\outsource\TmallLBF\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.pdb
+E:\outsource\TmalLBF\Bin\BusinessInterface.dll
+E:\outsource\TmalLBF\Bin\BusinessInterface.pdb
+E:\outsource\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.dll
+E:\outsource\TmalLBF\BusinessInterface\obj\Debug\BusinessInterface.pdb

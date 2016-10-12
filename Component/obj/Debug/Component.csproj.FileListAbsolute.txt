@@ -8,3 +8,7 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\Component.dll
 D:\g\outsource\TmallLBF\TmalLBF\Bin\Component.pdb
 D:\g\outsource\TmallLBF\TmalLBF\Component\obj\Debug\Component.dll
 D:\g\outsource\TmallLBF\TmalLBF\Component\obj\Debug\Component.pdb
+E:\outsource\TmalLBF\Bin\Component.dll
+E:\outsource\TmalLBF\Bin\Component.pdb
+E:\outsource\TmalLBF\Component\obj\Debug\Component.dll
+E:\outsource\TmalLBF\Component\obj\Debug\Component.pdb

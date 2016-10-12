@@ -2,6 +2,7 @@
 using System;
 using BusinessInterface;
 using Component;
+using System.Text.RegularExpressions;
 
 namespace ComponentTest
 {
@@ -35,5 +36,14 @@ namespace ComponentTest
             var result = factory.ImportCatalogueFromExcel(@"\\vmware-host\Shared Folders\桌面\Archive\LBF _Catalogue Produits Nom de la Marque Cliente V02.xlsx");
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void TestRegex() {
+            var str = "浙江省 宁波市 余姚市 朗霞街道创业园区北路七号 家家超市(315400)";
+            var regex = @"\([0-9a-zA-Z]{6,10}\)";
+            var result=Regex.Match(str,regex);
+            Assert.IsTrue(!string.IsNullOrEmpty(result.Value));
+        }
+
     }
 }

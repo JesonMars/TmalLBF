@@ -8,3 +8,7 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\Entity.dll
 D:\g\outsource\TmallLBF\TmalLBF\Bin\Entity.pdb
 D:\g\outsource\TmallLBF\TmalLBF\Entity\obj\Debug\Entity.dll
 D:\g\outsource\TmallLBF\TmalLBF\Entity\obj\Debug\Entity.pdb
+E:\outsource\TmalLBF\Bin\Entity.dll
+E:\outsource\TmalLBF\Bin\Entity.pdb
+E:\outsource\TmalLBF\Entity\obj\Debug\Entity.dll
+E:\outsource\TmalLBF\Entity\obj\Debug\Entity.pdb
