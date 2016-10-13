@@ -27,11 +27,13 @@ namespace inoutput
             var txtUserName = txt.Parent.Controls.Find("txtFtpUserName", false).FirstOrDefault();
             var txtPassWord = txt.Parent.Controls.Find("txtFtpPassword", false).FirstOrDefault();
             var txtHost=txt.Parent.Controls.Find("txtFtpHost",false).FirstOrDefault();
-            
+            var txtPath = txt.Parent.Controls.Find("txtFilePath", false).FirstOrDefault();
+
             var entity = new FtpConfigEntity();
             entity.FtpUserName = ((TextBox)txtUserName).Text;
             entity.FtpPassword = ((TextBox)txtPassWord).Text;
             entity.FtpHost = ((TextBox)txtHost).Text;
+            entity.FtpPath = ((TextBox)txtPath).Text;
 
             var business = Factory.Instance().GetService<IFtpBusiness>();
             var result=business.AddNew(entity);
@@ -54,6 +56,7 @@ namespace inoutput
                 this.txtFtpUserName.Text = entity.FtpUserName;
                 this.txtFtpPassword.Text = entity.FtpPassword;
                 this.txtFtpHost.Text = entity.FtpHost;
+                this.txtFilePath.Text = entity.FtpPath;
             }
         }
 

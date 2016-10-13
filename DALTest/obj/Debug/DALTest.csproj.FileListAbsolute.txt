@@ -12,3 +12,9 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\DALTest.pdb
 D:\g\outsource\TmallLBF\TmalLBF\DALTest\obj\Debug\DALTest.csprojResolveAssemblyReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\DALTest\obj\Debug\DALTest.dll
 D:\g\outsource\TmallLBF\TmalLBF\DALTest\obj\Debug\DALTest.pdb
+E:\outsource\TmalLBF\Bin\DALTest.dll.config
+E:\outsource\TmalLBF\Bin\DALTest.dll
+E:\outsource\TmalLBF\Bin\DALTest.pdb
+E:\outsource\TmalLBF\DALTest\obj\Debug\DALTest.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\DALTest\obj\Debug\DALTest.dll
+E:\outsource\TmalLBF\DALTest\obj\Debug\DALTest.pdb

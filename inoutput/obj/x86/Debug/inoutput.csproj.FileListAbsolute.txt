@@ -31,3 +31,13 @@ D:\g\outsource\TmallLBF\TmalLBF\inoutput\obj\x86\Debug\inoutput.frmMakeDestinati
 E:\outsource\TmalLBF\Bin\inoutput.exe.config
 E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.exe
 E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.pdb
+E:\outsource\TmalLBF\Bin\inoutput.exe
+E:\outsource\TmalLBF\Bin\inoutput.pdb
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.frmAbout.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.frmFtpConfig.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.frmMain.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.frmImport.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.FrmMakeDestinationFile.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.Properties.Resources.resources
+E:\outsource\TmalLBF\inoutput\obj\x86\Debug\inoutput.csproj.GenerateResource.Cache

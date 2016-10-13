@@ -18,7 +18,7 @@ namespace Business
 
         public Entity.FtpConfigEntity GetLast()
         {
-            var dal = Factory.Instance().GetService<IFtpDal>();
+            var dal = Factory.Instance().GetService<IFtpDal>(); 
             var ftpConfigEntity=dal.SelectLast();
             return ftpConfigEntity;
         }

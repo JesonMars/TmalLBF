@@ -36,6 +36,8 @@
             this.txtFtpHost = new System.Windows.Forms.TextBox();
             this.btnFtpUpdate = new System.Windows.Forms.Button();
             this.chkIsShowPw = new System.Windows.Forms.CheckBox();
+            this.txtFilePath = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblUserName
@@ -88,7 +90,7 @@
             // 
             // btnFtpUpdate
             // 
-            this.btnFtpUpdate.Location = new System.Drawing.Point(137, 227);
+            this.btnFtpUpdate.Location = new System.Drawing.Point(139, 251);
             this.btnFtpUpdate.Name = "btnFtpUpdate";
             this.btnFtpUpdate.Size = new System.Drawing.Size(75, 23);
             this.btnFtpUpdate.TabIndex = 6;
@@ -98,7 +100,7 @@
             // chkIsShowPw
             // 
             this.chkIsShowPw.AutoSize = true;
-            this.chkIsShowPw.Location = new System.Drawing.Point(49, 188);
+            this.chkIsShowPw.Location = new System.Drawing.Point(47, 218);
             this.chkIsShowPw.Name = "chkIsShowPw";
             this.chkIsShowPw.Size = new System.Drawing.Size(72, 16);
             this.chkIsShowPw.TabIndex = 7;
@@ -106,11 +108,29 @@
             this.chkIsShowPw.UseVisualStyleBackColor = true;
             this.chkIsShowPw.CheckedChanged += new System.EventHandler(this.chkIsShowPw_CheckedChanged);
             // 
+            // txtFilePath
+            // 
+            this.txtFilePath.Location = new System.Drawing.Point(104, 177);
+            this.txtFilePath.Name = "txtFilePath";
+            this.txtFilePath.Size = new System.Drawing.Size(205, 21);
+            this.txtFilePath.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(42, 180);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "保存路径：";
+            // 
             // frmFtpConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(356, 311);
+            this.ClientSize = new System.Drawing.Size(355, 302);
+            this.Controls.Add(this.txtFilePath);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.chkIsShowPw);
             this.Controls.Add(this.btnFtpUpdate);
             this.Controls.Add(this.txtFtpHost);
@@ -137,5 +157,7 @@
         private System.Windows.Forms.TextBox txtFtpHost;
         private System.Windows.Forms.Button btnFtpUpdate;
         private System.Windows.Forms.CheckBox chkIsShowPw;
+        private System.Windows.Forms.TextBox txtFilePath;
+        private System.Windows.Forms.Label label1;
     }
 }

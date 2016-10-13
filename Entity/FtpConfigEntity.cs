@@ -25,6 +25,11 @@ namespace Entity
         public string FtpHost { get; set; }
 
         /// <summary>
+        /// ftp文件保存路径
+        /// </summary>
+        public string FtpPath { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime Ctime { get; set; }

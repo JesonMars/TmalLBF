@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Helper;
+using Entity;
+using Component;
+using BusinessInterface;
 
 namespace inoutput
 {
@@ -61,7 +64,7 @@ namespace inoutput
                 return;
             }
             using (var background=new BackgroundWorker())
-            {
+            {   
                 ProcessStart("文件生成中...");
                 background.RunWorkerCompleted += new RunWorkerCompletedEventHandler((object o, RunWorkerCompletedEventArgs d) =>
                 {
@@ -70,7 +73,23 @@ namespace inoutput
                 });
                 background.DoWork+=new DoWorkEventHandler((object o, DoWorkEventArgs d) =>
                 {
-                    MessageBox.Show("生成成功！");
+                    var entity = new MakeDestEntity();
+                    entity.IsMakeCsv = this.cbCsv.Checked;
+                    entity.IsMakeXls = this.cbXls.Checked;
+                    entity.IsMakeXlsx = this.cbXlsx.Checked;
+                    entity.IsPushToFtp = this.cbUploadToFtp.Checked;
+                    entity.OrderListFile = txtSelectOrderList.Text;
+                    entity.OrderDetailListFile = txtSelectOrderDetailList.Text;
+                    entity.DestFolder = txtDestinationFolder.Text;
+                    var business = Factory.Instance().GetService<IMakeDestBusiness>();
+                    var result=business.Make(entity);
+                    if (result){
+                        MessageBox.Show("生成成功！");
+                    }
+                    else {
+                        MessageBox.Show("生成失败！");
+                    }
+                    
                     
                 });
                 background.RunWorkerAsync();
@@ -156,5 +175,6 @@ namespace inoutput
         {
             this.btnMake.Enabled = true;
         }
+
     }
 }

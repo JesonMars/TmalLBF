@@ -19,3 +19,9 @@ D:\g\outsource\TmallLBF\TmalLBF\Bin\ComponentTest.pdb
 D:\g\outsource\TmallLBF\TmalLBF\ComponentTest\obj\Debug\ComponentTest.csprojResolveAssemblyReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\ComponentTest\obj\Debug\ComponentTest.dll
 D:\g\outsource\TmallLBF\TmalLBF\ComponentTest\obj\Debug\ComponentTest.pdb
+E:\outsource\TmalLBF\Bin\ComponentTest.dll.config
+E:\outsource\TmalLBF\Bin\ComponentTest.dll
+E:\outsource\TmalLBF\Bin\ComponentTest.pdb
+E:\outsource\TmalLBF\ComponentTest\obj\Debug\ComponentTest.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\ComponentTest\obj\Debug\ComponentTest.dll
+E:\outsource\TmalLBF\ComponentTest\obj\Debug\ComponentTest.pdb

@@ -165,6 +165,10 @@ namespace Business.DestMake
         }
         protected bool PushFileToFtp(string file)
         {
+            var ftpconfigdal = Factory.Instance().GetService<IFtpDal>();
+            var config=ftpconfigdal.SelectLast();
+            var ftpHelper = new FtpHelper(config.FtpHost,config.FtpPath,config.FtpUserName,config.FtpPassword);
+            ftpHelper.Upload(file);
             return true;
         }
 

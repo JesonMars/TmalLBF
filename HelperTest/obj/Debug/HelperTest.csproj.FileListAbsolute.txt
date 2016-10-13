@@ -19,3 +19,10 @@ D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\Interop.Microsoft.Office.In
 D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.csproj.ResolveComReference.cache
 D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.dll
 D:\g\outsource\TmallLBF\TmalLBF\HelperTest\obj\Debug\HelperTest.pdb
+E:\outsource\TmalLBF\HelperTest\obj\Debug\HelperTest.csprojResolveAssemblyReference.cache
+E:\outsource\TmalLBF\HelperTest\obj\Debug\HelperTest.csproj.ResolveComReference.cache
+E:\outsource\TmalLBF\HelperTest\obj\Debug\HelperTest.dll
+E:\outsource\TmalLBF\Bin\HelperTest.dll.config
+E:\outsource\TmalLBF\Bin\HelperTest.dll
+E:\outsource\TmalLBF\Bin\HelperTest.pdb
+E:\outsource\TmalLBF\HelperTest\obj\Debug\HelperTest.pdb
