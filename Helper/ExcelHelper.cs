@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
@@ -140,6 +141,35 @@ namespace Helper
                 }
             }
             return dt;
+        }
+
+        public bool ExportExcel(string filename,List<List<string>> data,string sheetname,XlFileFormat fileFormat)
+        {
+            var xlApp = new Application();
+            var workbooks = xlApp.Workbooks;
+            var workbook=workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            var worksheet =(Worksheet) workbook.Worksheets[1];
+            worksheet.Name = sheetname;
+            var result = true;
+            if (data != null)
+            {
+                for (int i = 1; i <= data.Count; i++)
+                {
+                    for (int j = 1; j <= data[i-1].Count; j++)
+                    {
+                        worksheet.Cells[i, j] = data[i-1][j-1];
+                    }
+                }
+                worksheet.SaveAs(filename, fileFormat, Type.Missing, Type.Missing, Type.Missing, Type.Missing,Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                //worksheet.SaveAs(filename, fileFormat, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,Type.Missing,Type.Missing,Type.Missing);
+            }
+            else
+            {
+                result = false;
+            }
+            workbook.Close();
+            xlApp.Quit();
+            return result;
         }
 
         /// <summary>

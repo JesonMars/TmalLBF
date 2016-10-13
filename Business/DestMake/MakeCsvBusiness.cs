@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entity;
+using Helper;
+using Microsoft.Office.Interop.Excel;
 
 namespace Business.DestMake
 {
@@ -14,8 +16,10 @@ namespace Business.DestMake
         }
         public override string CreateFile()
         {
-            var result = "csv";
-            return result;
+            var excelHelper = new ExcelHelper();
+            var filename = string.Format(@"{0}\{1}.{2}",FoldPath, ConfigHelper.GetDestFileName(),Extension);
+            excelHelper.ExportExcel(filename, new List<List<string>>(), "Expected file order",XlFileFormat.xlCSV);
+            return filename;
         }
 
         public override string Extension

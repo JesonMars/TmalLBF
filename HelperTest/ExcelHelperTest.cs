@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Helper;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HelperTest
@@ -52,6 +53,25 @@ namespace HelperTest
                 }
                 Console.WriteLine();
             }
+        }
+
+        [TestMethod]
+        public void TestExport()
+        {
+            var excel = new ExcelHelper();
+            var data=new List<string>();
+            data.Add("fdsfdsf");
+            data.Add("fdsfdsf");
+            data.Add("fdsfdsf");
+            data.Add("fdsfdsf");
+            data.Add("fdsfdsf");
+            var datas=new List<List<string>>();
+            datas.Add(data);
+            datas.Add(data);
+            datas.Add(data);
+            datas.Add(data);
+            var rows = excel.ExportExcel(@"D:\g\fdsf.csv", datas, "export", XlFileFormat.xlCSV);
+            Assert.IsNotNull(rows);
         }
 
     }

@@ -1,3 +1,4 @@
 inoutput.sln.DotSettings.user
 *.cache
 inoutput/obj/x86/Debug/*
+TestResults/*

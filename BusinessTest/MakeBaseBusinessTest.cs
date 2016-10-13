@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Business;
 using Business.DestMake;
 using Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +28,12 @@ namespace BusinessTest
             var entity = new MakeDestEntity();
             entity.OrderListFile = @"\\vmware-host\Shared Folders\桌面\Archive\ExportOrderList201609231016.xltx";
             entity.OrderDetailListFile = @"\\vmware-host\Shared Folders\桌面\Archive\ExportOrderDetailList2016092310161.xlsx";
-            var result=InitDataList(entity);
+            var business = new MakeDestBusiness();
+            entity.IsMakeCsv = true;
+            entity.IsMakeXlsx = true;
+            entity.IsMakeXls = true;
+            var result=business.Make(entity);
+            //var result=InitDestFileEntitys(entity);
             Assert.IsTrue(result);
         }
 

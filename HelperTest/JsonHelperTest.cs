@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Entity;
 
 namespace HelperTest
 {
@@ -171,7 +172,11 @@ namespace HelperTest
         [TestMethod()]
         public void JsonDeserializeTest1()
         {
-            JsonDeserializeTest1Helper<GenericParameterHelper>();
+            var entity = new DestFileEntity();
+            var jsonHelper=new JsonHelper();
+            var result=jsonHelper.JsonSerializer(entity);
+            var dest=jsonHelper.JsonDeserialize<DestFileEntity>(result);
+            Assert.IsInstanceOfType(dest,typeof(DestFileEntity));
         }
 
         /// <summary>
