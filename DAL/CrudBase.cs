@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using DALInterface;
 using Entity;
@@ -47,6 +49,29 @@ namespace DAL
             throw new NotImplementedException();
         }
 
+        public List<TU> SelectAll()
+        {
+            var type = typeof(TU);
+            var result = new List<TU>();
+            var table = type.Name;
+            var suffix = ConfigHelper.GetEntitySuffix();
+            table = table.Remove(table.Length - suffix.Length, suffix.Length);
+            var ds = DalAccessHelper.ExecuteDataSet(string.Format("select * from {0} order by id desc", table.ToLower()), null);
+            result = FillObjects<TU>(ds);
+            return result;
+        }
+
+        public List<T> SelelctAll<T>()  where T:BaseEntity,new()
+        {
+            var type = typeof(T);
+            var result = new List<T>();
+            var table = type.Name;
+            var suffix = ConfigHelper.GetEntitySuffix();
+            table = table.Remove(table.Length - suffix.Length, suffix.Length);
+            var ds = DalAccessHelper.ExecuteDataSet(string.Format("select * from {0} order by id desc", table.ToLower()), null);
+            result = FillObjects<T>(ds);
+            return result;
+        }
         public int Insert<T>(List<T> entitList)
         {
             throw new NotImplementedException();
@@ -128,19 +153,7 @@ namespace DAL
             var suffix = ConfigHelper.GetEntitySuffix();
             table = table.Remove(table.Length - suffix.Length, suffix.Length);
             var ds = DalAccessHelper.ExecuteDataSet(string.Format("select top 1 * from {0} order by id desc", table.ToLower()), null);
-            if (ds != null && ds.Tables.Count > 0)
-            {
-                var properties = result.GetType().GetProperties();
-                var row = ds.Tables[0].Rows[0];
-                if (row != null)
-                {
-                    foreach (var propertyInfo in properties)
-                    {
-                        var value = row[propertyInfo.Name];
-                        propertyInfo.SetValue(result, value, null);
-                    }
-                }
-            }
+            result=FillObject<TU>(ds);
             return result;
         }
 
@@ -152,20 +165,67 @@ namespace DAL
             var suffix = ConfigHelper.GetEntitySuffix();
             table = table.Remove(table.Length - suffix.Length, suffix.Length);
             var ds = DalAccessHelper.ExecuteDataSet(string.Format("select top 1 * from {0} order by id desc", table.ToLower()), null);
-            if (ds!=null && ds.Tables.Count>0)
+            result = FillObject<T>(ds);
+            return result;
+        }
+
+        private List<T> FillObjects<T>(DataSet ds) where T:new()
+        {
+            var result=new List<T>();
+
+            if (ds == null && ds.Tables.Count <= 0)
             {
-                var properties = result.GetType().GetProperties();
-                var row = ds.Tables[0].Rows[0];
-                if (row != null)
+                return result;
+            }
+            var rows = ds.Tables[0].Rows;
+            if (rows == null && rows.Count <= 0)
+            {
+                return result;
+            }
+            foreach (DataRow row in rows)
+            {
+                var tu = new T();
+                var properties = tu.GetType().GetProperties();
+                foreach (var propertyInfo in properties)
                 {
-                    foreach (var propertyInfo in properties)
+                    var value = row[propertyInfo.Name];
+                    if (DBNull.Value.Equals(value))
                     {
-                        var value = row[propertyInfo.Name];
-                        propertyInfo.SetValue(result,value,null);
+                        continue;
                     }
+                    var set = TypeHelper.ConvertObject(value,propertyInfo.PropertyType);
+                    propertyInfo.SetValue(tu,set, null);
                 }
+                result.Add(tu);
             }
             return result;
         }
+
+        private T FillObject<T>(DataSet ds) where T : new()
+        {
+            var result = new T();
+            if (ds == null && ds.Tables.Count <= 0)
+            {
+                return result;
+            }
+            var rows = ds.Tables[0].Rows;
+            if (rows == null && rows.Count <= 0)
+            {
+                return result;
+            }
+            var row = rows[0];
+            var properties = result.GetType().GetProperties();
+            foreach (var propertyInfo in properties)
+            {
+                var value = row[propertyInfo.Name];
+                if (DBNull.Value.Equals(value))
+                {
+                    continue;
+                }
+                var set = TypeHelper.ConvertObject(value,propertyInfo.PropertyType);
+                propertyInfo.SetValue(result, set, null);
+            }
+            return result;
+        } 
     }
 }

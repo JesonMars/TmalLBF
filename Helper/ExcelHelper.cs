@@ -201,7 +201,11 @@ namespace Helper
 
             Sheets = null;
             Workbook = null;
-            Application = null;
+            if (Application!=null)
+            {
+                Application.Quit();
+                Application = null;
+            }
         }
     }
 

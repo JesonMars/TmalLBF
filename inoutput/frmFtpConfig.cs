@@ -23,7 +23,7 @@ namespace inoutput
 
         private void btnFtpUpdate_Click(object sender, EventArgs e)
         {
-            var txt = (TextBox) sender;
+            var txt = (Button) sender;
             var txtUserName = txt.Parent.Controls.Find("txtFtpUserName", false).FirstOrDefault();
             var txtPassWord = txt.Parent.Controls.Find("txtFtpPassword", false).FirstOrDefault();
             var txtHost=txt.Parent.Controls.Find("txtFtpHost",false).FirstOrDefault();

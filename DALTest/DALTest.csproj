@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcancilDalTest.cs" />
+    <Compile Include="CatalogueDalTest.cs" />
     <Compile Include="CityDalTest.cs" />
     <Compile Include="CrudBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

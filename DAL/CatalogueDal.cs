@@ -63,9 +63,10 @@ namespace DAL
         public List<CatalogueEntity> SelectList(CatalogueEntity entity)
         {
             var result=new List<CatalogueEntity>();
-            var sql = "select * from catalogue where productref=@productref";
+            var sql = "select * from catalogue where productref=@productref and ebrand=@ebrand";
             var param=new List<OleDbParameter>();
             param.Add(new OleDbParameter("@productref",entity.ProductRef));
+            param.Add(new OleDbParameter("@ebrand", entity.EBrand));
             var ds=DalAccessHelper.ExecuteDataSet(sql, param);
             if (ds != null && ds.Tables.Count > 0)
             {

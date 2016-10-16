@@ -16,8 +16,14 @@ namespace DAL
             string sqlBuilder = "";
             foreach (var citiesEntity in cities)
             {
-                sqlBuilder=string.Format(@"insert into cities(pc,pe,cityc,citye,postcode) values('{0}','{1}','{2}','{3}','{4}');", citiesEntity.Pc,citiesEntity.Pe,citiesEntity.Cityc,citiesEntity.Citye,citiesEntity.PostCode);
-                DalAccessHelper.ExecuteNonQuery(sqlBuilder.ToString(), null);
+                sqlBuilder=string.Format(@"insert into cities(pc,pe,cityc,citye,postcode) values(@pc,@pe,@cityc,@citye,@post);");
+                var param=new List<OleDbParameter>();
+                param.Add(new OleDbParameter("@pc", citiesEntity.Pc));
+                param.Add(new OleDbParameter("@pe", citiesEntity.Pe));
+                param.Add(new OleDbParameter("@cityc", citiesEntity.Cityc));
+                param.Add(new OleDbParameter("@citye", citiesEntity.Citye));
+                param.Add(new OleDbParameter("@post", citiesEntity.PostCode));
+                DalAccessHelper.ExecuteNonQuery(sqlBuilder.ToString(), param);
                 result += 1;
             }
             

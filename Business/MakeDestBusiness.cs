@@ -21,15 +21,15 @@ namespace Business
             if (entity.IsMakeXlsx)
             {
                 var xlsxBusi = new MakeXlsxBusiness();
-                xlsxBusi.Application = csvBusi.Application;
                 xlsxBusi.DataList = csvBusi.DataList;
+                xlsxBusi.FoldPath = csvBusi.FoldPath;
                 xlsxBusi.Make(entity);
             }
             if (entity.IsMakeXls)
             {
                 var xlsBusi = new MakeXlsBusiness();
-                xlsBusi.Application = csvBusi.Application;
                 xlsBusi.DataList = csvBusi.DataList;
+                xlsBusi.FoldPath = csvBusi.FoldPath;
                 xlsBusi.Make(entity);
             }
             return true;

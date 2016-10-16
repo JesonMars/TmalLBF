@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Text;
 
 namespace Helper
@@ -49,6 +50,18 @@ namespace Helper
         {
             var name = new StringBuilder(GetAppSetting("postcoderegex"));
             return name.ToString();
+        }
+
+        public static List<string> GetDestFileHead()
+        {
+            var name = GetAppSetting("destfilehead");
+            return name.Split(',').ToList();
+        }
+
+        public static int GetPostCodeHeadCount()
+        {
+            var name = GetAppSetting("postcodeheadcount");
+            return int.Parse(name);
         }
     }
 }

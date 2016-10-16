@@ -38,10 +38,16 @@ namespace Entity
         /// <summary>
         /// 省名英文翻译，根据中英文对照表格China province_city_postcode搜索得到
         /// </summary>
-        public string ProvinceAutonomousRegion { get; set; }
-        public string City { get; set; }
+        public string EProvinceAutonomousRegion { get; set; }
+        /// <summary>
+        /// 省名中文翻译，根据中英文对照表格China province_city_postcode搜索得到
+        /// </summary>
+        public string CProvinceAutonomousRegion { get; set; }
+        public string ECity { get; set; }
+        public string CCity { get; set; }
         public string PostCode { get; set; }
-        public string CountyDistrict { get; set; }
+        public string ECountyDistrict { get; set; }
+        public string CCountyDistrict { get; set; }
         public string AddressDetails { get; set; }
         public string ConsigneePhoneNumber { get; set; }
         public string CDeliveryAddress { get; set; }

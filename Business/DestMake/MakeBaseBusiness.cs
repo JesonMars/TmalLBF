@@ -14,10 +14,8 @@ namespace Business.DestMake
     public abstract class MakeBaseBusiness
     {
         public MakeBaseBusiness(){}
-
-        public Application Application { get; set; }
         public string FoldPath { get; set; }
-        public List<DestFileEntity> DataList { get; set; }
+        public List<List<string>> DataList { get; set; }
         public abstract string Extension { get; }
 
         public string FileName
@@ -28,15 +26,22 @@ namespace Business.DestMake
         public bool Init(MakeDestEntity entity)
         {
             InitDestFileEntitys(entity);
-            InitApplication(this.DataList);
+            FoldPath = entity.DestFolder;
             return true;
         }
         public bool Make(MakeDestEntity entity)
         {
             var file=CreateFile();
-            if (entity.IsPushToFtp)
+            try
             {
-                PushFileToFtp(file);
+                if (entity.IsPushToFtp)
+                {
+                    PushFileToFtp(file);
+                }
+            }
+            catch (Exception ex)
+            {
+                
             }
             return true;
         }
@@ -47,9 +52,18 @@ namespace Business.DestMake
 #region 初始化订单列表数据
             var excelhelper=new ExcelHelper(entity.OrderListFile);
             var orderlistdata = excelhelper.GetAllSheetData();
+            excelhelper.Dispose();
             orderlistdata.RemoveAt(0);
             var orders=new List<OrderEntity>();
             var regex = ConfigHelper.GetPostCodeRegex();
+
+#region 初始化province city实体类
+
+            var cityDal = Factory.Instance().GetService<ICityDal>();
+            var cityEntitys = cityDal.SelectAll();
+
+#endregion
+
             foreach (var x in orderlistdata)
             {
                 if (string.IsNullOrEmpty(x[0]))
@@ -63,20 +77,55 @@ namespace Business.DestMake
                 order.AddressDetails = x[13];//收获地址
                 order.CDeliveryAddress = x[13];//收获地址
                 var addresss = order.AddressDetails.Split(' ');
-                order.City = addresss[1];//城市名称，默认的是收获地址的第一个
-                order.ProvinceAutonomousRegion = addresss[0];//省份名称
+                order.CCity = addresss[1];//城市名称，默认的是收获地址的第一个
+                order.CProvinceAutonomousRegion = addresss[0];//省份名称
                 order.ConsigneePhoneNumber = x[16];//收货人联系电话
                 order.Country = addresss[1] = "CN";//国家
-                order.CountyDistrict = TranslateHelper.YouDaoC2E(addresss[2]);//县/镇/区v
+                order.CCountyDistrict = addresss[2];//县/镇/区,中文名
+                order.ECountyDistrict = TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
                 order.SettlementAmount = x[8];//实际付款金额
+                order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName = TranslateHelper.YouDaoC2E(x[12]);//收款人英文姓名
-                order.CRecipientName = x[12];//收款人英文姓名
 
                 var postmatch = Regex.Match(order.AddressDetails, regex);
                 var postcode = "";
                 postcode = postmatch.Value;
                 order.PostCode = postcode.Replace("(", "").Replace(")", "");//邮政编码
-                order.AddressDetails = TranslateHelper.YouDaoC2E(order.AddressDetails.Replace(postcode, ""));//详细地址
+
+#region 检验邮编
+                var cityEntity = new CitiesEntity();
+                if (!string.IsNullOrEmpty(order.PostCode) && order.PostCode.Length == 6 && order.PostCode != "000000")
+                {
+                    /*var pc3 = order.PostCode.Substring(2, 1); //获取邮编的第三位
+                    string pchead = order.PostCode.Substring(0, pc3 == "0" ? 4 : 3); //如果第三位是0则获取前四位，否则获取前三位*/
+                    string pchead = order.PostCode.Substring(0,ConfigHelper.GetPostCodeHeadCount()); //如果第三位是0则获取前四位，否则获取前三位
+                    var citiesEntities =
+                        cityEntitys.Where(c => c.PostCode.IndexOf(pchead, StringComparison.Ordinal) == 0).ToList();
+                    if (citiesEntities.Count()>0)
+                    {
+                        cityEntity =citiesEntities.FirstOrDefault(c =>(order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
+                                    order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+                        if (cityEntity == null)
+                        {
+                            cityEntity = citiesEntities.FirstOrDefault(e => e.PostCode == order.PostCode && order.CProvinceAutonomousRegion.Contains(e.Pc.Trim()));
+                        }
+                    }
+                }
+                else
+                {
+                    cityEntity =
+                            cityEntitys.FirstOrDefault(
+                                c => (order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) && order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+                }
+                if (cityEntity == null)
+                {
+                    cityEntity=new CitiesEntity();
+                }
+#endregion
+
+                order.ECity = cityEntity.Citye;
+                order.EProvinceAutonomousRegion = cityEntity.Pe;
+                order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", order.CDeliveryAddress.Replace(postcode, "").Split(' ').Skip(2).ToList()));//详细地址    
                 orders.Add(order);
             }
 #endregion
@@ -84,6 +133,7 @@ namespace Business.DestMake
 #region 初始化订单详情列表数据
             excelhelper.InitExcel(entity.OrderDetailListFile);
             var orderdetailistdata = excelhelper.GetAllSheetData();
+            excelhelper.Dispose();
             var orderdetails = new List<OrderDetailEntity>();
             if (orderdetailistdata != null && orderdetailistdata.Count > 0)
             {
@@ -110,14 +160,77 @@ namespace Business.DestMake
             }
 #endregion
 
-#region 生成导出的数据实体
+#region 初始化catalogue
             var cataloguedal = Factory.Instance().GetService<ICatalogueDal>();
-            orderdetails.ForEach(x =>
+            var catalogueEntitys = cataloguedal.SelectAll();
+#endregion
+
+#region 生成导出的数据实体
+            catalogueEntitys.ForEach(c =>
+            {
+                foreach (var x in orderdetails.FindAll(x => (x.ProductName.IndexOf(c.EBrand, StringComparison.OrdinalIgnoreCase) == 0
+                    || x.ProductName.IndexOf(c.CBrand, StringComparison.Ordinal) == 0)
+                    && x.ProductRef == (c.ProductRef??"")))
+                {
+                    if (string.IsNullOrEmpty(c.ProductRef))
+                    {
+                        if (!x.ProductName.Contains(c.CFullProductName))
+                        {
+                            continue;
+                        }
+                    }
+                    var destFileEntity = new DestFileEntity();
+                    var order = orders.FirstOrDefault(o => o.OrderId == x.OrderId) ?? new OrderEntity();
+                    var catalogueEntity = c;
+                    destFileEntity.OrderId = x.OrderId;//订单编号
+                    destFileEntity.LbfOrderNumber = string.Format("{0}_{1}", x.OrderId, catalogueEntity.EBrand);    //法国邮政订单号
+                    destFileEntity.DateOrder = order.DateOrder;//下单时间
+                    destFileEntity.FrenchCompanyName = catalogueEntity.FCompany;//法国公司名称
+                    destFileEntity.Brand = catalogueEntity.EBrand;
+                    destFileEntity.EFullProductName = catalogueEntity.EFullProductName;
+                    destFileEntity.ProductRef = string.IsNullOrEmpty(x.ProductRef) ? catalogueEntity.BarEnCode : x.ProductRef;
+                    destFileEntity.Quantity = x.Count;
+                    destFileEntity.PricePerUnit = catalogueEntity.RmbMiniSalePrice;
+                    destFileEntity.ShippingFees = order.ShippingFees;
+                    destFileEntity.Country = order.Country;
+                    destFileEntity.ProvinceAutonomousRegion = order.EProvinceAutonomousRegion;
+                    destFileEntity.City = order.ECity;
+                    destFileEntity.CountyDistrict = order.ECountyDistrict;
+                    destFileEntity.PostCode = order.PostCode;
+                    destFileEntity.AddressDetails = order.AddressDetails;
+                    destFileEntity.CFullProductName = x.ProductName;
+                    destFileEntity.CRecipientName = order.CRecipientName;
+                    destFileEntity.ERecipientName = order.ERecipientName.ToUpper();
+                    destFileEntity.CDeliveryAddress = order.CDeliveryAddress;
+                    destFileEntity.ConsigneePhoneNumber = order.ConsigneePhoneNumber;
+                    result.Add(destFileEntity);
+                }
+            });
+            
+#region 计算优惠金额和支付贷款金额
+            foreach (var destFileEntities in result.GroupBy(x=>x.OrderId))
+            {
+                var settleamount = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId).SettlementAmount;
+                var salePrice = destFileEntities.Sum(d => d.PricePerUnit*d.Quantity);
+                var count = destFileEntities.Count();
+                var couponsRewards = decimal.Round((salePrice - decimal.Parse(settleamount)) /count , 2);
+                var settleAmountAvg = decimal.Round(decimal.Parse(settleamount)/count, 2);
+                foreach (var destFileEntity in destFileEntities)
+                {
+                    destFileEntity.CouponsRewards = couponsRewards;
+                    destFileEntity.SettlementAmount = settleAmountAvg;
+                }
+            }
+#endregion
+
+#region 已注释
+            /*orderdetails.ForEach(x =>
             {
                 var destFileEntity=new DestFileEntity();
-                var catalogueEntitys = cataloguedal.SelectList(new CatalogueEntity(){ProductRef =x.ProductRef});
-                var catalogueEntity = catalogueEntitys.FirstOrDefault() ?? new CatalogueEntity();
+                
                 var order = orders.FirstOrDefault(o => o.OrderId == x.OrderId) ?? new OrderEntity();
+                catalogueEntitys = cataloguedal.SelectList(new CatalogueEntity(){ProductRef =x.ProductRef,EBrand ="" });
+                var catalogueEntity = catalogueEntitys.FirstOrDefault() ?? new CatalogueEntity();
 
                 destFileEntity.OrderId = x.OrderId;//订单编号
                 destFileEntity.LbfOrderNumber = string.Format("{0}_{1}", x.OrderId, catalogueEntity.EBrand);    //法国邮政订单号
@@ -128,7 +241,6 @@ namespace Business.DestMake
                 destFileEntity.ProductRef = x.ProductRef;
                 destFileEntity.Quantity = x.Count;
                 destFileEntity.PricePerUnit = catalogueEntity.RmbMiniSalePrice;
-                //todo:CouponsRewards
                 var miniPrice = orderdetails.Where(o => o.OrderId == x.OrderId).Sum(o =>
                 {
                     var firstOrDefault = cataloguedal.SelectList(new CatalogueEntity() {ProductRef = o.ProductRef}).FirstOrDefault();
@@ -137,7 +249,6 @@ namespace Business.DestMake
                 destFileEntity.CouponsRewards = decimal.Round((miniPrice - decimal.Parse(order.SettlementAmount)) /
                                                 orderdetails.Count(o => o.OrderId == x.OrderId),2);
                 destFileEntity.ShippingFees = order.ShippingFees;
-                //todo:SettlementAmount
                 destFileEntity.SettlementAmount =decimal.Round(decimal.Parse(order.SettlementAmount) / orderdetails.Count(o => o.OrderId == x.OrderId),2);
                 destFileEntity.ERecipientName = order.ERecipientName.ToUpper();
                 destFileEntity.Country = order.Country;
@@ -152,15 +263,45 @@ namespace Business.DestMake
                 destFileEntity.CDeliveryAddress = order.CDeliveryAddress;
                 destFileEntity.ConsigneePhoneNumber = order.ConsigneePhoneNumber;
                 result.Add(destFileEntity);
-            });
+            });*/
+#endregion
 #endregion
 
-            this.DataList = result;
-            return true;
-        }
-        protected bool InitApplication(List<DestFileEntity> dataList)
-        {
-            this.Application= new Application();
+#region 加载最终数据
+            var datalist=new List<List<string>>();
+            var destHead = ConfigHelper.GetDestFileHead();
+            datalist.Add(destHead);
+            result.ForEach(r =>
+            {
+                var data=new List<string>();
+                data.Add(string.Format("'{0}", r.OrderId));
+                data.Add(r.LbfOrderNumber);
+                data.Add(DateTime.Parse(r.DateOrder).ToString("yyyy/M/d HH:mm"));
+                data.Add(r.FrenchCompanyName);
+                data.Add(r.Brand);
+                data.Add(r.EFullProductName);
+                data.Add(r.ProductRef);
+                data.Add(r.Quantity.ToString());
+                data.Add(r.PricePerUnit.ToString());
+                data.Add(r.CouponsRewards.ToString());
+                data.Add(r.ShippingFees.ToString());
+                data.Add(r.SettlementAmount.ToString());
+                data.Add(r.ERecipientName);
+                data.Add(r.Country);
+                data.Add(r.ProvinceAutonomousRegion);
+                data.Add(r.City);
+                data.Add(string.Format("'{0}", r.PostCode));
+                data.Add(r.CountyDistrict);
+                data.Add(r.AddressDetails);
+                data.Add(string.Format("{0}", r.ConsigneePhoneNumber));
+                data.Add(r.CFullProductName);
+                data.Add(r.CRecipientName);
+                data.Add(r.CDeliveryAddress);
+                data.Add(string.Format("{0}", r.ConsigneePhoneNumber));
+                datalist.Add(data);
+            });
+            this.DataList = datalist;
+#endregion
             return true;
         }
         protected bool PushFileToFtp(string file)

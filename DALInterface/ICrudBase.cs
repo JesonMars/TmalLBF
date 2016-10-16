@@ -18,6 +18,8 @@ namespace DALInterface
         TU Select(TU entity);
         List<T> SelectList<T>(T entity);
         List<TU> SelectList(TU entity);
+        List<TU> SelectAll();
+        List<T> SelelctAll<T>() where T:BaseEntity,new(); 
         bool TruncateTable<T>();
         bool TruncateTable();
         int Insert<T>(List<T> entitList);

@@ -47,5 +47,14 @@ namespace DALTest
             Assert.IsNotNull(result);
             Assert.IsTrue(result > 0);
         }
+
+        [TestMethod]
+        public void TestSelectAll()
+        {
+            var crud=new CrudBase<CatalogueEntity>();
+            var list=crud.SelectAll();
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count>0);
+        }
     }
 }
