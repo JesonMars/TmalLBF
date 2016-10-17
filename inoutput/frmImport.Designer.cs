@@ -74,7 +74,7 @@
             this.groupBox1.Controls.Add(this.btnSelectCatalogue);
             this.groupBox1.Controls.Add(this.btnImportCatalogue);
             this.groupBox1.Controls.Add(this.txtImportCatalogue);
-            this.groupBox1.Location = new System.Drawing.Point(29, 366);
+            this.groupBox1.Location = new System.Drawing.Point(29, 228);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(513, 113);
             this.groupBox1.TabIndex = 4;
@@ -114,12 +114,13 @@
             this.gbArcancil.Controls.Add(this.btnSelectArcancil);
             this.gbArcancil.Controls.Add(this.btnImportArcancil);
             this.gbArcancil.Controls.Add(this.txtImportArcancil);
-            this.gbArcancil.Location = new System.Drawing.Point(29, 204);
+            this.gbArcancil.Location = new System.Drawing.Point(29, 383);
             this.gbArcancil.Name = "gbArcancil";
             this.gbArcancil.Size = new System.Drawing.Size(513, 113);
             this.gbArcancil.TabIndex = 3;
             this.gbArcancil.TabStop = false;
             this.gbArcancil.Text = "产品初始化";
+            this.gbArcancil.Visible = false;
             // 
             // btnSelectArcancil
             // 
@@ -129,6 +130,7 @@
             this.btnSelectArcancil.TabIndex = 2;
             this.btnSelectArcancil.Text = "选择";
             this.btnSelectArcancil.UseVisualStyleBackColor = true;
+            this.btnSelectArcancil.Visible = false;
             // 
             // btnImportArcancil
             // 
@@ -138,6 +140,7 @@
             this.btnImportArcancil.TabIndex = 1;
             this.btnImportArcancil.Text = "导入";
             this.btnImportArcancil.UseVisualStyleBackColor = true;
+            this.btnImportArcancil.Visible = false;
             // 
             // txtImportArcancil
             // 
@@ -148,6 +151,7 @@
             this.txtImportArcancil.Size = new System.Drawing.Size(322, 21);
             this.txtImportArcancil.TabIndex = 0;
             this.txtImportArcancil.Text = "请选择产品文件";
+            this.txtImportArcancil.Visible = false;
             // 
             // statusBarMain
             // 

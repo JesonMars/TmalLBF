@@ -1,6 +1,9 @@
 ﻿using Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
+using log4net;
+using log4net.Config;
 
 namespace HelperTest
 {
@@ -13,16 +16,22 @@ namespace HelperTest
     [TestClass()]
     public class ConfigHelperTest
     {
-
-
+        private static log4net.ILog logger = log4net.LogManager.GetLogger(typeof(ConfigHelperTest));
+        public ConfigHelperTest()
+        {
+            XmlConfigurator.Configure(new FileInfo("log4net.xml"));
+        }
         /// <summary>
-        ///ConfigHelper 构造函数 的测试
+        ///GetDestFileName 的测试
         ///</summary>
         [TestMethod()]
-        public void ConfigHelperConstructorTest()
+        public void GetDestFileNameTest()
         {
-            ConfigHelper target = new ConfigHelper();
-            Assert.Inconclusive("TODO: 实现用来验证目标的代码");
+            //LogManager.GetLogger(typeof(ConfigHelperTest)).Info("run here", new Exception("test log"));
+            logger.Error("fd",new Exception("fdsfdsfdsfdsf"));
+            string actual;
+            actual = ConfigHelper.GetDestFileName();
+            Assert.IsFalse(string.IsNullOrEmpty(actual));
         }
 
         /// <summary>
@@ -66,17 +75,7 @@ namespace HelperTest
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
 
-        /// <summary>
-        ///GetDestFileName 的测试
-        ///</summary>
-        [TestMethod()]
-        public void GetDestFileNameTest()
-        {
-            string actual;
-            actual = ConfigHelper.GetDestFileName();
-            Assert.IsFalse(string.IsNullOrEmpty(actual));
-        }
-
+        
         /// <summary>
         ///GetEntitySuffix 的测试
         ///</summary>

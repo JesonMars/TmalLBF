@@ -3,6 +3,7 @@ using System;
 using BusinessInterface;
 using Component;
 using System.Text.RegularExpressions;
+using log4net;
 
 namespace ComponentTest
 {
@@ -16,6 +17,7 @@ namespace ComponentTest
         [TestMethod]
         public void TestImportCitiesFromExcel()
         {
+            LogManager.GetLogger(typeof(ImportBusinessTest)).Info("run",new Exception("hhahaha"));
             var factory = Factory.Instance().GetService<IImportBusiness>();
             var result=factory.ImportCitiesFromExcel(@"\\vmware-host\Shared Folders\桌面\Fwd_ 用户订单文件开发\Chinaprovince_city.xls");
             Assert.IsTrue(result);
