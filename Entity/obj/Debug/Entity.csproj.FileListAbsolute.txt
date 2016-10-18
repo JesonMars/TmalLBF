@@ -12,3 +12,4 @@ E:\outsource\TmalLBF\Bin\Entity.dll
 E:\outsource\TmalLBF\Bin\Entity.pdb
 E:\outsource\TmalLBF\Entity\obj\Debug\Entity.dll
 E:\outsource\TmalLBF\Entity\obj\Debug\Entity.pdb
+E:\outsource\TmalLBF\Entity\obj\Debug\Entity.csprojResolveAssemblyReference.cache

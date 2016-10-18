@@ -170,7 +170,7 @@ namespace Business.DestMake
             {
                 foreach (var x in orderdetails.FindAll(x => (x.ProductName.IndexOf(c.EBrand, StringComparison.OrdinalIgnoreCase) == 0
                     || x.ProductName.IndexOf(c.CBrand, StringComparison.Ordinal) == 0)
-                    && x.ProductRef == (c.ProductRef??"")))
+                    && (x.ProductRef == (c.ProductRef??"") || x.ProductRef == c.BarEnCode)))
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
                     {
@@ -214,11 +214,11 @@ namespace Business.DestMake
                 var salePrice = destFileEntities.Sum(d => d.PricePerUnit*d.Quantity);
                 var count = destFileEntities.Count();
                 var couponsRewards = decimal.Round((salePrice - decimal.Parse(settleamount)) /count , 2);
-                var settleAmountAvg = decimal.Round(decimal.Parse(settleamount)/count, 2);
+                //var settleAmountAvg = decimal.Round(decimal.Parse(settleamount)/count, 2);
                 foreach (var destFileEntity in destFileEntities)
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
-                    destFileEntity.SettlementAmount = settleAmountAvg;
+                    destFileEntity.SettlementAmount = destFileEntity.PricePerUnit-couponsRewards;
                 }
             }
 #endregion
@@ -271,7 +271,7 @@ namespace Business.DestMake
             var datalist=new List<List<string>>();
             var destHead = ConfigHelper.GetDestFileHead();
             datalist.Add(destHead);
-            result.ForEach(r =>
+            (from a in result orderby a.Brand,a.FrenchCompanyName,a.CRecipientName select a).ToList().ForEach(r =>
             {
                 var data=new List<string>();
                 data.Add(string.Format("'{0}", r.OrderId));
@@ -280,7 +280,7 @@ namespace Business.DestMake
                 data.Add(r.FrenchCompanyName);
                 data.Add(r.Brand);
                 data.Add(r.EFullProductName);
-                data.Add(r.ProductRef);
+                data.Add(Regex.IsMatch(r.ProductRef,@"^[1-9]\d*$")?string.Format("'{0}",r.ProductRef):r.ProductRef);
                 data.Add(r.Quantity.ToString());
                 data.Add(r.PricePerUnit.ToString());
                 data.Add(r.CouponsRewards.ToString());
