@@ -107,7 +107,13 @@ namespace Business.DestMake
                                     order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
                         if (cityEntity == null)
                         {
-                            cityEntity = citiesEntities.FirstOrDefault(e => e.PostCode == order.PostCode && order.CProvinceAutonomousRegion.Contains(e.Pc.Trim()));
+                            cityEntity =
+                                cityEntitys.FirstOrDefault(
+                                    c =>
+                                        (order.CCity.Contains(c.Cityc.Trim()) ||
+                                         order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
+                                        order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+                                //(e => e.PostCode == order.PostCode && order.CProvinceAutonomousRegion.Contains(e.Pc.Trim()));
                         }
                     }
                 }
@@ -122,8 +128,8 @@ namespace Business.DestMake
                     cityEntity=new CitiesEntity();
                 }
 #endregion
-
-                order.ECity = cityEntity.Citye;
+                //判断是否为直辖市
+                order.ECity = (!string.IsNullOrEmpty(cityEntity.Pc) && order.CCity.Contains(cityEntity.Pc)) ? cityEntity.Pe : cityEntity.Citye;
                 order.EProvinceAutonomousRegion = cityEntity.Pe;
                 order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", order.CDeliveryAddress.Replace(postcode, "").Split(' ').Skip(2).ToList()));//详细地址    
                 orders.Add(order);
@@ -168,9 +174,12 @@ namespace Business.DestMake
 #region 生成导出的数据实体
             catalogueEntitys.ForEach(c =>
             {
-                foreach (var x in orderdetails.FindAll(x => (x.ProductName.IndexOf(c.EBrand, StringComparison.OrdinalIgnoreCase) == 0
-                    || x.ProductName.IndexOf(c.CBrand, StringComparison.Ordinal) == 0)
-                    && (x.ProductRef == (c.ProductRef??"") || x.ProductRef == c.BarEnCode)))
+                /*foreach (var x in orderdetails.FindAll(x => (x.ProductName.IndexOf(c.CFullProductName, StringComparison.OrdinalIgnoreCase) == 0
+                    || x.ProductName.IndexOf(c.EFullProductName, StringComparison.Ordinal) == 0)
+                    && (x.ProductRef == (c.ProductRef??"") || x.ProductRef == c.BarEnCode)))*/
+                foreach (var x in orderdetails.FindAll(x => (x.ProductName==c.CFullProductName
+                    || x.ProductName==c.EFullProductName)
+                    && (x.ProductRef == (c.ProductRef ?? "") || x.ProductRef == c.BarEnCode)))
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
                     {

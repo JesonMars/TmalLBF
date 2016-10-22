@@ -1,0 +1,23 @@
+{FATAL}10/21 00:31:10 - make dest error
+System.ArgumentNullException: 值不能为 null。
+参数名: source
+   在 System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   在 Helper.TranslateHelper.YouDaoC2E(String shouldTrans) 位置 E:\outsource\TmalLBF\Helper\TranslateHelper.cs:行号 23
+   在 Business.DestMake.MakeBaseBusiness.InitDestFileEntitys(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 85
+   在 Business.DestMake.MakeBaseBusiness.Init(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 28
+   在 Business.MakeDestBusiness.Make(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\MakeDestBusiness.cs:行号 20
+{FATAL}10/21 00:31:31 - make dest error
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Business.DestMake.MakeBaseBusiness.InitDestFileEntitys(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 126
+   在 Business.DestMake.MakeBaseBusiness.Init(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 28
+   在 Business.MakeDestBusiness.Make(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\MakeDestBusiness.cs:行号 20
+{FATAL}10/21 00:33:04 - make dest error
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Business.DestMake.MakeBaseBusiness.InitDestFileEntitys(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 126
+   在 Business.DestMake.MakeBaseBusiness.Init(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 28
+   在 Business.MakeDestBusiness.Make(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\MakeDestBusiness.cs:行号 20
+{FATAL}10/21 00:34:42 - make dest error
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Business.DestMake.MakeBaseBusiness.InitDestFileEntitys(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 126
+   在 Business.DestMake.MakeBaseBusiness.Init(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\DestMake\MakeBaseBusiness.cs:行号 28
+   在 Business.MakeDestBusiness.Make(MakeDestEntity entity) 位置 E:\outsource\TmalLBF\Business\MakeDestBusiness.cs:行号 20
