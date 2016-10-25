@@ -179,7 +179,7 @@ namespace Business.DestMake
                     && (x.ProductRef == (c.ProductRef??"") || x.ProductRef == c.BarEnCode)))*/
                 foreach (var x in orderdetails.FindAll(x => (x.ProductName==c.CFullProductName
                     || x.ProductName==c.EFullProductName)
-                    && (x.ProductRef == (c.ProductRef ?? "") || x.ProductRef == c.BarEnCode)))
+                    && (x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
                     {
@@ -311,6 +311,7 @@ namespace Business.DestMake
             });
             this.DataList = datalist;
 #endregion
+
             return true;
         }
         protected bool PushFileToFtp(string file)
