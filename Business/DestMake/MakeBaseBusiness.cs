@@ -219,11 +219,12 @@ namespace Business.DestMake
 #region 计算优惠金额和支付贷款金额
             foreach (var destFileEntities in result.GroupBy(x=>x.OrderId))
             {
-                var settleamount = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId).SettlementAmount;
+                var order = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId);
+                var settleamount = string.IsNullOrEmpty(order.SettlementAmount) ? 0 : decimal.Parse(order.SettlementAmount);
+                var shippingFee = string.IsNullOrEmpty(order.ShippingFees) ? 0 : decimal.Parse(order.ShippingFees);
                 var salePrice = destFileEntities.Sum(d => d.PricePerUnit*d.Quantity);
                 var count = destFileEntities.Count();
-                var couponsRewards = decimal.Round((salePrice - decimal.Parse(settleamount)) /count , 2);
-                //var settleAmountAvg = decimal.Round(decimal.Parse(settleamount)/count, 2);
+                var couponsRewards = decimal.Round((salePrice - settleamount - shippingFee) / count, 2);
                 foreach (var destFileEntity in destFileEntities)
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
