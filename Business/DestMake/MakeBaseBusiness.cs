@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -240,6 +241,7 @@ namespace Business.DestMake
                 foreach (var destFileEntity in destFileEntities)
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
+                    destFileEntity.ShippingFees = decimal.Round(shippingFee / count, 2).ToString(CultureInfo.CurrentCulture);
                     destFileEntity.SettlementAmount = destFileEntity.PricePerUnit - couponsRewards;
                 }
             }
