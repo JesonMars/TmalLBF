@@ -16,6 +16,7 @@ namespace Business.DestMake
             var excelHelper = new ExcelHelper();
             var filename = string.Format(@"{0}\{1}.{2}", FoldPath, ConfigHelper.GetDestFileName(), Extension);
             excelHelper.ExportExcel(filename, DataList, "Expected file order", XlFileFormat.xlExcel8);
+            excelHelper.Dispose();
             return filename;
         }
 

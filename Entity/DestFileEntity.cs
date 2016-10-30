@@ -55,6 +55,10 @@ namespace Entity
         /// </summary>
         public string ShippingFees{get;set;}
         /// <summary>
+        /// 订单的总运费
+        /// </summary>
+        public string TotalShippingFees { get; set; }
+        /// <summary>
         /// 买家最后支付货款的金额
         /// </summary>
         public decimal SettlementAmount{get;set;}

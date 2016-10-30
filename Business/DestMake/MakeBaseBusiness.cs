@@ -82,7 +82,6 @@ namespace Business.DestMake
                 order.ConsigneePhoneNumber = x[16];//收货人联系电话
                 order.Country = addresss[1] = "CN";//国家
                 order.CCountyDistrict = addresss[2];//县/镇/区,中文名
-                order.ECountyDistrict = TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
                 order.SettlementAmount = x[8];//实际付款金额
                 order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName = TranslateHelper.YouDaoC2E(x[12]);//收款人英文姓名
@@ -104,16 +103,14 @@ namespace Business.DestMake
                     if (citiesEntities.Count()>0)
                     {
                         cityEntity =citiesEntities.FirstOrDefault(c =>(order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
-                                    order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+                                                                      order.CProvinceAutonomousRegion.Contains(c.Pc.Trim())) ??
+                                    cityEntitys.FirstOrDefault(c =>
+                                                                              (order.CCity.Contains(c.Cityc.Trim()) ||
+                                                                               order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
+                                                                              order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
                         if (cityEntity == null)
                         {
-                            cityEntity =
-                                cityEntitys.FirstOrDefault(
-                                    c =>
-                                        (order.CCity.Contains(c.Cityc.Trim()) ||
-                                         order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
-                                        order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
-                                //(e => e.PostCode == order.PostCode && order.CProvinceAutonomousRegion.Contains(e.Pc.Trim()));
+                            cityEntity = citiesEntities.FirstOrDefault();
                         }
                     }
                 }
@@ -129,8 +126,9 @@ namespace Business.DestMake
                 }
 #endregion
                 //判断是否为直辖市
-                order.ECity = (!string.IsNullOrEmpty(cityEntity.Pc) && order.CCity.Contains(cityEntity.Pc)) ? cityEntity.Pe : cityEntity.Citye;
+                order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion,order.CCity) ? cityEntity.Pe : cityEntity.Citye;
                 order.EProvinceAutonomousRegion = cityEntity.Pe;
+                order.ECountyDistrict =CityHelper.IsMunicipality(order.CProvinceAutonomousRegion,order.CCity) && cityEntity.Cityc==order.CCountyDistrict? cityEntity.Citye:TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
                 order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", order.CDeliveryAddress.Replace(postcode, "").Split(' ').Skip(2).ToList()));//详细地址    
                 orders.Add(order);
             }
@@ -177,9 +175,11 @@ namespace Business.DestMake
                 /*foreach (var x in orderdetails.FindAll(x => (x.ProductName.IndexOf(c.CFullProductName, StringComparison.OrdinalIgnoreCase) == 0
                     || x.ProductName.IndexOf(c.EFullProductName, StringComparison.Ordinal) == 0)
                     && (x.ProductRef == (c.ProductRef??"") || x.ProductRef == c.BarEnCode)))*/
-                foreach (var x in orderdetails.FindAll(x => (x.ProductName==c.CFullProductName
+                /*foreach (var x in orderdetails.FindAll(x => (x.ProductName==c.CFullProductName
                     || x.ProductName==c.EFullProductName)
-                    && (x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))
+                    && (x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))*/
+                foreach (var x in orderdetails.FindAll(x => ( //x.ProductName.IndexOf(c.EBrand, StringComparison.OrdinalIgnoreCase) != -1 || x.ProductName.IndexOf(c.CFullProductName, StringComparison.OrdinalIgnoreCase)!=-1) && 
+                    x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
                     {
@@ -200,7 +200,8 @@ namespace Business.DestMake
                     destFileEntity.ProductRef = string.IsNullOrEmpty(x.ProductRef) ? catalogueEntity.BarEnCode : x.ProductRef;
                     destFileEntity.Quantity = x.Count;
                     destFileEntity.PricePerUnit = catalogueEntity.RmbMiniSalePrice;
-                    destFileEntity.ShippingFees = order.ShippingFees;
+                    destFileEntity.ShippingFees = catalogueEntity.RmbShippingCost.ToString();
+                    destFileEntity.TotalShippingFees = order.ShippingFees;
                     destFileEntity.Country = order.Country;
                     destFileEntity.ProvinceAutonomousRegion = order.EProvinceAutonomousRegion;
                     destFileEntity.City = order.ECity;
@@ -219,7 +220,7 @@ namespace Business.DestMake
 #region 计算优惠金额和支付贷款金额
             foreach (var destFileEntities in result.GroupBy(x=>x.OrderId))
             {
-                var order = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId);
+                /*var order = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId);
                 var settleamount = string.IsNullOrEmpty(order.SettlementAmount) ? 0 : decimal.Parse(order.SettlementAmount);
                 var shippingFee = string.IsNullOrEmpty(order.ShippingFees) ? 0 : decimal.Parse(order.ShippingFees);
                 var salePrice = destFileEntities.Sum(d => d.PricePerUnit*d.Quantity);
@@ -229,6 +230,17 @@ namespace Business.DestMake
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
                     destFileEntity.SettlementAmount = destFileEntity.PricePerUnit-couponsRewards;
+                }*/
+                var order = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId);
+                var settleamount = MathHelper.Parse(order.SettlementAmount);
+                var shippingFee = MathHelper.Parse(order.ShippingFees);
+                var salePrice = destFileEntities.Sum(d => d.PricePerUnit * d.Quantity);
+                var count = destFileEntities.Count();
+                var couponsRewards = decimal.Round((salePrice - (settleamount-shippingFee)) / count, 2);
+                foreach (var destFileEntity in destFileEntities)
+                {
+                    destFileEntity.CouponsRewards = couponsRewards;
+                    destFileEntity.SettlementAmount = destFileEntity.PricePerUnit - couponsRewards;
                 }
             }
 #endregion
