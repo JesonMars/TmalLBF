@@ -26,7 +26,7 @@ namespace Business
 
             var excelHelper = new ExcelHelper(filePath);
             var cities=excelHelper.GetAllSheetData();
-
+            excelHelper.Dispose();
             if (cities != null && cities.Count > 0)
             {
                 //first we need truncate cities table delete the old data
@@ -69,7 +69,7 @@ namespace Business
 
             var excelHelper = new ExcelHelper(filePath);
             var arcancils = excelHelper.GetAllSheetData();
-
+            excelHelper.Dispose();
             if (arcancils != null && arcancils.Count > 0)
             {
                 //first we need truncate cities table delete the old data
@@ -107,7 +107,7 @@ namespace Business
 
             var excelHelper = new ExcelHelper(filePath);
             var catalogues = excelHelper.GetDataBySheetName("Products Catalogue ");
-            
+            excelHelper.Dispose();
             if (catalogues != null && catalogues.Count > 0)
             {
                 //first we need truncate cities table delete the old data

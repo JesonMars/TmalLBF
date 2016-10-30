@@ -196,9 +196,12 @@ namespace Helper
 
         public void Dispose()
         {
-            if(Workbook!=null)
+            if (Workbook != null)
+            {
                 Workbook.Close();
-
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(Workbook);
+            }
+            
             Sheets = null;
             Workbook = null;
             if (Application!=null)
@@ -206,6 +209,7 @@ namespace Helper
                 Application.Quit();
                 Application = null;
             }
+            GC.Collect();
         }
     }
 
