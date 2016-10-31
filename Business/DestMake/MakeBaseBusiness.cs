@@ -77,7 +77,7 @@ namespace Business.DestMake
                 order.ShippingFees = x[4];//运费
                 order.AddressDetails = x[13];//收获地址
                 order.CDeliveryAddress = x[13];//收获地址
-                var addresss = order.AddressDetails.Split(' ');
+                var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
                 order.CCity = addresss[1];//城市名称，默认的是收获地址的第一个
                 order.CProvinceAutonomousRegion = addresss[0];//省份名称
                 order.ConsigneePhoneNumber = x[16];//收货人联系电话
@@ -179,7 +179,7 @@ namespace Business.DestMake
                 /*foreach (var x in orderdetails.FindAll(x => (x.ProductName==c.CFullProductName
                     || x.ProductName==c.EFullProductName)
                     && (x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))*/
-                foreach (var x in orderdetails.FindAll(x => ( //x.ProductName.IndexOf(c.EBrand, StringComparison.OrdinalIgnoreCase) != -1 || x.ProductName.IndexOf(c.CFullProductName, StringComparison.OrdinalIgnoreCase)!=-1) && 
+                foreach (var x in orderdetails.FindAll(x => (
                     x.ProductRef == c.BarEnCode || x.ProductRef == (c.ProductRef ?? ""))))
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
