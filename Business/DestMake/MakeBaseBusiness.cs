@@ -295,7 +295,7 @@ namespace Business.DestMake
             var datalist=new List<List<string>>();
             var destHead = ConfigHelper.GetDestFileHead();
             datalist.Add(destHead);
-            (from a in result orderby a.Brand,a.FrenchCompanyName,a.CRecipientName select a).ToList().ForEach(r =>
+            (from a in result orderby a.FrenchCompanyName,a.Brand,a.DateOrder select a).ToList().ForEach(r =>
             {
                 var data=new List<string>();
                 data.Add(string.Format("'{0}", r.OrderId));
