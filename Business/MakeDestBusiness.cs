@@ -41,7 +41,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                LogHelper.Log("make dest error", ex, LogHelper.LogType.Fatal);
+                LogHelper.Log("make dest error", ex, LogHelper.LogType.Error);
                 result= false;
             }
             

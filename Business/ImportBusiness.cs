@@ -24,32 +24,40 @@ namespace Business
                 return false;
             }
 
-            var excelHelper = new ExcelHelper(filePath);
-            var cities=excelHelper.GetAllSheetData();
-            excelHelper.Dispose();
-            if (cities != null && cities.Count > 0)
+            try
             {
-                //first we need truncate cities table delete the old data
-                var cityDal = Factory.Instance().GetService<ICityDal>();
-                cityDal.TruncateTable<CitiesEntity>();
-                //then add the new city data
-                var newCities=new List<CitiesEntity>();
-                foreach (var city in cities)
+                var excelHelper = new ExcelHelper(filePath);
+                var cities = excelHelper.GetAllSheetData();
+                excelHelper.Dispose();
+                if (cities != null && cities.Count > 0)
                 {
-                    var cityone=new CitiesEntity();
-                    cityone.Pc=string.IsNullOrEmpty(city[0]) ? newCities[newCities.Count-1].Pc: city[0];
-                    cityone.Pe = string.IsNullOrEmpty(city[0]) ? newCities[newCities.Count - 1].Pe : city[1];
-                    cityone.Cityc=city[2];
-                    cityone.Citye=city[3];
-                    cityone.PostCode = city[4];
-                    newCities.Add(cityone);
-                }
-                var result=cityDal.Insert(newCities);
+                    //first we need truncate cities table delete the old data
+                    var cityDal = Factory.Instance().GetService<ICityDal>();
+                    cityDal.TruncateTable<CitiesEntity>();
+                    //then add the new city data
+                    var newCities = new List<CitiesEntity>();
+                    foreach (var city in cities)
+                    {
+                        var cityone = new CitiesEntity();
+                        cityone.Pc = string.IsNullOrEmpty(city[0]) ? newCities[newCities.Count - 1].Pc : city[0];
+                        cityone.Pe = string.IsNullOrEmpty(city[0]) ? newCities[newCities.Count - 1].Pe : city[1];
+                        cityone.Cityc = city[2];
+                        cityone.Citye = city[3];
+                        cityone.PostCode = city[4];
+                        newCities.Add(cityone);
+                    }
+                    var result = cityDal.Insert(newCities);
 
-                if (result != cities.Count)
-                {
-                    return false;
+                    if (result != cities.Count)
+                    {
+                        return false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log("城市导入错误："+ex.Message,ex,LogHelper.LogType.Error);
+                return false;
             }
 
             return true;
