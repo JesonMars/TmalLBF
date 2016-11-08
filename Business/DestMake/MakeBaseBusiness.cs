@@ -77,59 +77,46 @@ namespace Business.DestMake
                 order.ShippingFees = x[4];//运费
                 order.AddressDetails = x[13];//收获地址
                 order.CDeliveryAddress = x[13];//收获地址
+
+                //获取邮政编码
+                var postmatch = Regex.Match(order.AddressDetails, regex);
+                var postcode = "";
+                postcode = postmatch.Value;
+                order.PostCode = postcode.Replace("(", "").Replace(")", "");
+
                 var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
-                order.CCity = addresss[1];//城市名称，默认的是收获地址的第一个
-                order.CProvinceAutonomousRegion = addresss[0];//省份名称
+                var cityEntity=new CitiesEntity();
+                if (addresss.Length >= 3)
+                {
+                    order.CCity = addresss[1]; //城市名称，默认的是收获地址的第一个
+                    order.CProvinceAutonomousRegion = addresss[0]; //省份名称
+                    order.Country = addresss[1] = "CN"; //国家
+                    order.CCountyDistrict = addresss[2]; //县/镇/区,中文名
+
+                    cityEntity = GetCityByPostCode(order, cityEntitys);
+                    order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
+                    order.EProvinceAutonomousRegion = cityEntity.Pe;
+                    //判断是否为直辖市
+                    order.ECountyDistrict = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) && cityEntity.Cityc == order.CCountyDistrict ? cityEntity.Citye : TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
+                }
+                else
+                {
+                    cityEntity = GetAddressByPostCode(postcode, order.AddressDetails, cityEntitys);
+                    order.CCity = cityEntity.Cityc;
+                    order.CProvinceAutonomousRegion = cityEntity.Pc;
+                    order.Country = addresss[1] = "CN"; //国家
+                    order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
+                    order.EProvinceAutonomousRegion = cityEntity.Pe;
+                    order.CCountyDistrict = "请手动补充"; //县/镇/区,中文名
+                    order.ECountyDistrict = "请手动补充";
+                }
+                
+
                 order.ConsigneePhoneNumber = x[16];//收货人联系电话
-                order.Country = addresss[1] = "CN";//国家
-                order.CCountyDistrict = addresss[2];//县/镇/区,中文名
                 order.SettlementAmount = x[8];//实际付款金额
                 order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName = TranslateHelper.YouDaoC2E(x[12]);//收款人英文姓名
 
-                var postmatch = Regex.Match(order.AddressDetails, regex);
-                var postcode = "";
-                postcode = postmatch.Value;
-                order.PostCode = postcode.Replace("(", "").Replace(")", "");//邮政编码
-
-#region 检验邮编
-                var cityEntity = new CitiesEntity();
-                if (!string.IsNullOrEmpty(order.PostCode) && order.PostCode.Length == 6 && order.PostCode != "000000")
-                {
-                    /*var pc3 = order.PostCode.Substring(2, 1); //获取邮编的第三位
-                    string pchead = order.PostCode.Substring(0, pc3 == "0" ? 4 : 3); //如果第三位是0则获取前四位，否则获取前三位*/
-                    string pchead = order.PostCode.Substring(0,ConfigHelper.GetPostCodeHeadCount()); //如果第三位是0则获取前四位，否则获取前三位
-                    var citiesEntities =
-                        cityEntitys.Where(c => c.PostCode.IndexOf(pchead, StringComparison.Ordinal) == 0).ToList();
-                    if (citiesEntities.Count()>0)
-                    {
-                        cityEntity =citiesEntities.FirstOrDefault(c =>(order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
-                                                                      order.CProvinceAutonomousRegion.Contains(c.Pc.Trim())) ??
-                                    cityEntitys.FirstOrDefault(c =>
-                                                                              (order.CCity.Contains(c.Cityc.Trim()) ||
-                                                                               order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
-                                                                              order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
-                        if (cityEntity == null)
-                        {
-                            cityEntity = citiesEntities.FirstOrDefault();
-                        }
-                    }
-                }
-                else
-                {
-                    cityEntity =
-                            cityEntitys.FirstOrDefault(
-                                c => (order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) && order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
-                }
-                if (cityEntity == null)
-                {
-                    cityEntity=new CitiesEntity();
-                }
-#endregion
-                //判断是否为直辖市
-                order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion,order.CCity) ? cityEntity.Pe : cityEntity.Citye;
-                order.EProvinceAutonomousRegion = cityEntity.Pe;
-                order.ECountyDistrict =CityHelper.IsMunicipality(order.CProvinceAutonomousRegion,order.CCity) && cityEntity.Cityc==order.CCountyDistrict? cityEntity.Citye:TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
                 order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", order.CDeliveryAddress.Replace(postcode, "").Split(' ').Skip(2).ToList()));//详细地址    
                 orders.Add(order);
             }
@@ -242,7 +229,7 @@ namespace Business.DestMake
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
                     destFileEntity.ShippingFees = decimal.Round(shippingFee / count, 2).ToString(CultureInfo.CurrentCulture);
-                    destFileEntity.SettlementAmount = destFileEntity.PricePerUnit - couponsRewards;
+                    destFileEntity.SettlementAmount = (destFileEntity.PricePerUnit - couponsRewards)*destFileEntity.Quantity;
                 }
             }
 #endregion
@@ -350,6 +337,71 @@ namespace Business.DestMake
             var filename = string.Format(@"{0}\{1}.{2}", FoldPath, ConfigHelper.GetDestFileName(), Extension);
             excelHelper.ExportExcel(filename, new List<List<string>>(), "Expected file order",XlFileFormat.xlExcel8);
             return filename;
+        }
+
+        private CitiesEntity GetAddressByPostCode(string postCode, string address, List<CitiesEntity> cityEntitys)
+        {
+            var cityEntity=new CitiesEntity();
+            if (!string.IsNullOrEmpty(postCode) && postCode.Length == 6 && postCode != "000000")
+            {
+                string pchead = postCode.Substring(0, ConfigHelper.GetPostCodeHeadCount()); //如果第三位是0则获取前四位，否则获取前三位
+                var citiesEntities =
+                    cityEntitys.Where(c => c.PostCode.IndexOf(pchead, StringComparison.Ordinal) == 0).ToList();
+                if (citiesEntities.Count() > 0)
+                {
+                    cityEntity = citiesEntities.FirstOrDefault(c => address.Contains(c.Cityc.Trim()) &&
+                                                                    address.Contains(c.Pc.Trim())) ??
+                                 cityEntitys.FirstOrDefault(c => address.Contains(c.Cityc.Trim()) &&
+                                                                 address.Contains(c.Pc.Trim()));
+                    if (cityEntity == null)
+                    {
+                        cityEntity = citiesEntities.FirstOrDefault();
+                    }
+                }
+            }
+            else
+            {
+                cityEntity = cityEntitys.FirstOrDefault(c => address.Contains(c.Cityc.Trim()) &&
+                                                                 address.Contains(c.Pc.Trim()));
+            }
+            return cityEntity;
+        }
+
+        private CitiesEntity GetCityByPostCode(OrderEntity order, List<CitiesEntity> cityEntitys)
+        {
+            #region 检验邮编
+            var cityEntity = new CitiesEntity();
+            if (!string.IsNullOrEmpty(order.PostCode) && order.PostCode.Length == 6 && order.PostCode != "000000")
+            {
+                string pchead = order.PostCode.Substring(0, ConfigHelper.GetPostCodeHeadCount()); //如果第三位是0则获取前四位，否则获取前三位
+                var citiesEntities =
+                    cityEntitys.Where(c => c.PostCode.IndexOf(pchead, StringComparison.Ordinal) == 0).ToList();
+                if (citiesEntities.Count() > 0)
+                {
+                    cityEntity = citiesEntities.FirstOrDefault(c => (order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
+                                                                  order.CProvinceAutonomousRegion.Contains(c.Pc.Trim())) ??
+                                cityEntitys.FirstOrDefault(c => (order.CCity.Contains(c.Cityc.Trim()) ||
+                                                                           order.CCountyDistrict.Contains(c.Cityc.Trim())) &&
+                                                                          order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+                    if (cityEntity == null)
+                    {
+                        cityEntity = citiesEntities.FirstOrDefault();
+                    }
+                }
+            }
+            else
+            {
+                cityEntity =
+                        cityEntitys.FirstOrDefault(
+                            c => (order.CCity.Contains(c.Cityc.Trim()) || order.CCountyDistrict.Contains(c.Cityc.Trim())) && order.CProvinceAutonomousRegion.Contains(c.Pc.Trim()));
+            }
+            if (cityEntity == null)
+            {
+                cityEntity = new CitiesEntity();
+            }
+            #endregion
+
+            return cityEntity;
         }
 
         /*protected List<string> RunNext(MakeBaseBusiness next,MakeDestEntity entity)
