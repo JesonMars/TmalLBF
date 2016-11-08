@@ -24,11 +24,11 @@ namespace Business.DestMake
             get { return ConfigHelper.GetExcelExtesion(); }
         }
 
-        public bool Init(MakeDestEntity entity)
+        public string Init(MakeDestEntity entity)
         {
-            InitDestFileEntitys(entity);
+            var result=InitDestFileEntitys(entity);
             FoldPath = entity.DestFolder;
-            return true;
+            return result;
         }
         public bool Make(MakeDestEntity entity)
         {

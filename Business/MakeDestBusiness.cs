@@ -12,13 +12,13 @@ namespace Business
 {
     public class MakeDestBusiness:BaseBusiness,IMakeDestBusiness
     {
-        public bool Make(Entity.MakeDestEntity entity)
+        public string Make(Entity.MakeDestEntity entity)
         {
             var csvBusi = new MakeCsvBusiness();
-            var result = true;
+            var result = new StringBuilder();
             try
             {
-                csvBusi.Init(entity);
+                result.AppendLine(csvBusi.Init(entity));
 
                 if (entity.IsMakeCsv)
                 {
@@ -42,10 +42,10 @@ namespace Business
             catch (Exception ex)
             {
                 LogHelper.Log("make dest error", ex, LogHelper.LogType.Error);
-                result= false;
+                result.AppendLine(ex.Message);
             }
             
-            return result;
+            return result.ToString();
         }
 
     }

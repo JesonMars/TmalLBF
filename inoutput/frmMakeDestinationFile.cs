@@ -83,11 +83,11 @@ namespace inoutput
                     entity.DestFolder = txtDestinationFolder.Text;
                     var business = Factory.Instance().GetService<IMakeDestBusiness>();
                     var result=business.Make(entity);
-                    if (result){
-                        MessageBox.Show("生成成功！");
+                    if (!string.IsNullOrEmpty(result)){
+                        MessageBox.Show("生成成功！","信息",MessageBoxButtons.OK,MessageBoxIcon.None);
                     }
                     else {
-                        MessageBox.Show("生成失败！");
+                        MessageBox.Show(string.Format("生成失败！\r\n{0}", result), "信息", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     
                     

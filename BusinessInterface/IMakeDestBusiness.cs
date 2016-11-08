@@ -13,6 +13,6 @@ namespace BusinessInterface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>bool,true means make success,false means failed</returns>
-        bool Make(MakeDestEntity entity);
+        string Make(MakeDestEntity entity);
     }
 }

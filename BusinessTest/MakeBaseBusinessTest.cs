@@ -35,7 +35,7 @@ namespace BusinessTest
             entity.DestFolder = @"D:\g\outsource\TmallLBF\TmalLBF\Archive";
             var result=business.Make(entity);
             //var result=InitDestFileEntitys(entity);
-            Assert.IsTrue(result);
+            Assert.IsNull(result);
         }
 
 
