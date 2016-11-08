@@ -63,5 +63,10 @@ namespace Helper
             var name = GetAppSetting("postcodeheadcount");
             return int.Parse(name);
         }
+        public static string GetJuHeZiDianUrl()
+        {
+            var juhezidian = GetAppSetting("juhezidian");
+            return juhezidian.Replace("|", "&");
+        }
     }
 }

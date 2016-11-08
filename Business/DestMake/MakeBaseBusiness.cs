@@ -50,6 +50,8 @@ namespace Business.DestMake
         {
             StringBuilder resultMsg = new StringBuilder();
             var result=new List<DestFileEntity>();
+            //定义出错的订单列表
+            var delOrderIds=new List<string>();
 
 #region 初始化订单列表数据
             var excelhelper=new ExcelHelper(entity.OrderListFile);
@@ -79,56 +81,61 @@ namespace Business.DestMake
                 order.AddressDetails = x[13];//收获地址
                 order.CDeliveryAddress = x[13];//收获地址
 
-                
+                //获取邮政编码
+                var postmatch = Regex.Match(order.AddressDetails, regex);
+                var postcode = "";
+                postcode = postmatch.Value;
+                order.PostCode = postcode.Replace("(", "").Replace(")", "");
 
-                    //获取邮政编码
-                    var postmatch = Regex.Match(order.AddressDetails, regex);
-                    var postcode = "";
-                    postcode = postmatch.Value;
-                    order.PostCode = postcode.Replace("(", "").Replace(")", "");
-
-                    var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
-                    var cityEntity = new CitiesEntity();
-                    try
+                var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
+                var cityEntity = new CitiesEntity();
+                var iscon = false;
+                try
+                {
+                    
+                    if (addresss.Length >= 3)
                     {
-                        if (addresss.Length >= 3)
-                        {
-                            order.CCity = addresss[1]; //城市名称，默认的是收获地址的第一个
-                            order.CProvinceAutonomousRegion = addresss[0]; //省份名称
-                            order.Country = addresss[1] = "CN"; //国家
-                            order.CCountyDistrict = addresss[2]; //县/镇/区,中文名
+                        order.CCity = addresss[1]; //城市名称，默认的是收获地址的第一个
+                        order.CProvinceAutonomousRegion = addresss[0]; //省份名称
+                        order.Country = addresss[1] = "CN"; //国家
+                        order.CCountyDistrict = addresss[2]; //县/镇/区,中文名
 
-                            cityEntity = GetCityByPostCode(order, cityEntitys);
-                            order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
-                            order.EProvinceAutonomousRegion = cityEntity.Pe;
-                            //判断是否为直辖市
-                            order.ECountyDistrict = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) && cityEntity.Cityc == order.CCountyDistrict ? cityEntity.Citye : TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
-                        }
-                        else
-                        {
-                            cityEntity = GetAddressByPostCode(postcode, order.AddressDetails, cityEntitys);
-                            order.CCity = cityEntity.Cityc;
-                            order.CProvinceAutonomousRegion = cityEntity.Pc;
-                            order.Country = addresss[1] = "CN"; //国家
-                            order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
-                            order.EProvinceAutonomousRegion = cityEntity.Pe;
-                            order.CCountyDistrict = "请手动补充"; //县/镇/区,中文名
-                            order.ECountyDistrict = "请手动补充";
-                        }
+                        cityEntity = GetCityByPostCode(order, cityEntitys);
+                        order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
+                        order.EProvinceAutonomousRegion = cityEntity.Pe;
+                        //判断是否为直辖市
+                        order.ECountyDistrict = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) && cityEntity.Cityc == order.CCountyDistrict ? cityEntity.Citye : TranslateHelper.YouDaoC2E(order.CCountyDistrict);//县/镇/区,英文名
                     }
-                    catch (Exception e)
+                    else
                     {
-                        resultMsg.AppendFormat("订单：{0}，导入失败,收获地址不符合规范！\r\n", order.OrderId);
-                        continue;
-                    }
+                        cityEntity = GetAddressByPostCode(order.PostCode, order.AddressDetails, cityEntitys);
+                        order.CCity = cityEntity.Cityc;
+                        order.CProvinceAutonomousRegion = cityEntity.Pc;
+                        order.Country ="CN"; //国家
+                        order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
+                        order.EProvinceAutonomousRegion = cityEntity.Pe;
+                        order.CCountyDistrict = "请手动补充"; //县/镇/区,中文名
+                        order.ECountyDistrict = "请手动补充";
+                     }
+                }
+                catch (Exception e)
+                {
+                    resultMsg.AppendFormat("订单：{0}，导入失败,收获地址不符合规范！\r\n", order.OrderId);
+                    delOrderIds.Add(order.OrderId);
+                    iscon = true;
+                }
+                if (iscon)
+                {
+                    continue;
+                }
 
-                    order.ConsigneePhoneNumber = x[16];//收货人联系电话
-                    order.SettlementAmount = x[8];//实际付款金额
-                    order.CRecipientName = x[12];//收款人中文姓名
-                    order.ERecipientName = TranslateHelper.YouDaoC2E(x[12]);//收款人英文姓名
-
-                    order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", order.CDeliveryAddress.Replace(postcode, "").Split(' ').Skip(2).ToList()));//详细地址    
-                    orders.Add(order);
+                order.ConsigneePhoneNumber = x[16];//收货人联系电话
+                order.SettlementAmount = x[8];//实际付款金额
+                order.CRecipientName = x[12];//收款人中文姓名
+                order.ERecipientName = TransNameToPin(x[12]);//收款人英文姓名
+                order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", Regex.Replace(order.CDeliveryAddress.Replace(postcode, ""), @".*\s", "")));//详细地址    
+                    
+                orders.Add(order);
             }
 #endregion
 
@@ -142,7 +149,7 @@ namespace Business.DestMake
                 orderdetailistdata.RemoveAt(0);
                 foreach (var x in orderdetailistdata)
                 {
-                    if (string.IsNullOrEmpty(x[0]) || Regex.IsMatch(x[0], @"[\u4e00-\u9fa5]"))
+                    if (string.IsNullOrEmpty(x[0]) || Regex.IsMatch(x[0], @"[\u4e00-\u9fa5]") || delOrderIds.Exists(d=>d==x[0]))
                     {
                         continue;
                     }
@@ -175,7 +182,7 @@ namespace Business.DestMake
                 {
                     if (string.IsNullOrEmpty(c.ProductRef))
                     {
-                        if (!x.ProductName.Contains(c.CFullProductName))
+                        if (string.IsNullOrEmpty(c.CFullProductName) || !x.ProductName.Contains(c.CFullProductName))
                         {
                             continue;
                         }
@@ -202,7 +209,7 @@ namespace Business.DestMake
                     destFileEntity.AddressDetails = order.AddressDetails;
                     destFileEntity.CFullProductName = x.ProductName;
                     destFileEntity.CRecipientName = order.CRecipientName;
-                    destFileEntity.ERecipientName = order.ERecipientName.ToUpper();
+                    destFileEntity.ERecipientName = order.ERecipientName;
                     destFileEntity.CDeliveryAddress = order.CDeliveryAddress;
                     destFileEntity.ConsigneePhoneNumber = order.ConsigneePhoneNumber;
                     result.Add(destFileEntity);
@@ -264,6 +271,12 @@ namespace Business.DestMake
             this.DataList = datalist;
 #endregion
 
+            var successOrderids = result.Select(x => x.OrderId).ToList();
+            var failedOrders= orderdetails.Where(a => !successOrderids.Contains(a.OrderId));
+            if (failedOrders!=null && failedOrders.Count() > 0)
+            {
+                resultMsg.AppendFormat("订单：{0}，导出失败，请手动添加！", string.Join(",", failedOrders.Select(a => a.OrderId).ToArray()));
+            }
             return resultMsg.ToString();
         }
         protected bool PushFileToFtp(string file)
@@ -352,6 +365,18 @@ namespace Business.DestMake
             #endregion
 
             return cityEntity;
+        }
+
+        private string TransNameToPin(string name)
+        {
+            var result = new StringBuilder();
+            foreach (var c in name)
+            {
+                var en=TranslateHelper.JuHeZiDian(c.ToString());
+                result.Append(en.ToUpper());
+                result.Append(" ");
+            }
+            return result.Length>0?result.Remove(result.Length - 1, 1).ToString():"";
         }
 
         /*protected List<string> RunNext(MakeBaseBusiness next,MakeDestEntity entity)

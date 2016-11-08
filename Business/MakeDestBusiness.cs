@@ -18,7 +18,7 @@ namespace Business
             var result = new StringBuilder();
             try
             {
-                result.AppendLine(csvBusi.Init(entity));
+                result.Append(csvBusi.Init(entity));
 
                 if (entity.IsMakeCsv)
                 {

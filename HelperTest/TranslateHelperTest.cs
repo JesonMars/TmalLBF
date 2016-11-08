@@ -24,5 +24,14 @@ namespace HelperTest
             actual = TranslateHelper.YouDaoC2E(shouldTrans);
             Assert.IsNotNull(actual);
         }
+
+        [TestMethod]
+        public void JuHeZiDianTest()
+        {
+            string shouldTrans = "张"; // TODO: 初始化为适当的值
+            string actual;
+            actual = TranslateHelper.JuHeZiDian(shouldTrans);
+            Assert.IsNotNull(actual);
+        }
     }
 }

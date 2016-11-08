@@ -33,5 +33,29 @@ namespace Helper
 
             return result;
         }
+
+        public static string JuHeZiDian(string data)
+        {
+            string result = "";
+            try
+            {
+                var url = ConfigHelper.GetJuHeZiDianUrl();
+                url +=data;
+                var response = HttpHelper.SendGetRequest(url, null, Encoding.UTF8, Encoding.UTF8);
+
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var jsonhelper = new JsonHelper();
+                    var entity = jsonhelper.JsonDeserialize<JuHeZiDianEntity>(response);
+                    result = (entity!=null && entity.result!=null) ?entity.result.py:"";
+                }
+            }
+            catch (Exception exception)
+            {
+                LogHelper.Log(exception.Message, exception, LogHelper.LogType.Error);
+            }
+
+            return result;
+        }
     }
 }
