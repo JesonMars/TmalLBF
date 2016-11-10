@@ -78,11 +78,11 @@ namespace Business.DestMake
                 order.OrderId = x[0]; //订单号
                 order.DateOrder = x[17];//订单创建时间
                 order.ShippingFees = x[4];//运费
-                order.AddressDetails = x[13];//收获地址
-                order.CDeliveryAddress = x[13];//收获地址
+                order.AddressDetails =string.IsNullOrEmpty(x[39])? x[13]:x[39];//收获地址
+                order.CDeliveryAddress =order.AddressDetails;//收获地址
 
                 //获取邮政编码
-                var postmatch = Regex.Match(order.AddressDetails, regex);
+                var postmatch = Regex.Match(x[13], regex);
                 var postcode = "";
                 postcode = postmatch.Value;
                 order.PostCode = postcode.Replace("(", "").Replace(")", "");
