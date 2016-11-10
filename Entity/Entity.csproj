@@ -47,6 +47,7 @@
     <Compile Include="DestFileEntity.cs" />
     <Compile Include="FtpConfigEntity.cs" />
     <Compile Include="CatalogueEntity.cs" />
+    <Compile Include="JuHeZiDianEntity.cs" />
     <Compile Include="MakeDestEntity.cs" />
     <Compile Include="OrderDetailEntity.cs" />
     <Compile Include="OrderEntity.cs" />
