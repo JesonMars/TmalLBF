@@ -82,10 +82,21 @@ namespace Business.DestMake
                 order.CDeliveryAddress =order.AddressDetails;//收获地址
 
                 //获取邮政编码
-                var postmatch = Regex.Match(x[13], regex);
                 var postcode = "";
-                postcode = postmatch.Value;
-                order.PostCode = postcode.Replace("(", "").Replace(")", "");
+                if (!string.IsNullOrEmpty(x[39]))
+                {
+                    var cityCur = cityEntitys.FirstOrDefault(c => { return order.AddressDetails != null && order.AddressDetails.IndexOf(c.Pc) == 0; });
+                    postcode = cityCur != null ? string.Format("{0}0000", cityCur.PostCode.Substring(0,2)) : "";
+                    resultMsg.AppendLine(string.IsNullOrEmpty(postcode)?"订单："+order.OrderId+"未找到邮编地址，请手动输入":"订单："+order.OrderId+"使用修改后的收获地址");
+                    order.PostCode = postcode;
+                }
+                else
+                {
+                    var postmatch = Regex.Match(x[13], regex);
+                    postcode = postmatch.Value;
+                    order.PostCode = postcode.Replace("(", "").Replace(")", "");
+                }
+                
 
                 var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
                 var cityEntity = new CitiesEntity();
