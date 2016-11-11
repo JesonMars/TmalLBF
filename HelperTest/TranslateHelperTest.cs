@@ -19,7 +19,7 @@ namespace HelperTest
         [TestMethod]
         public void YouDaoC2ETest()
         {
-            string shouldTrans = "张王先"; // TODO: 初始化为适当的值
+            string shouldTrans = "张店区"; // TODO: 初始化为适当的值
             string actual;
             actual = TranslateHelper.YouDaoC2E(shouldTrans);
             Assert.IsNotNull(actual);

@@ -78,35 +78,31 @@ namespace Business.DestMake
                 order.OrderId = x[0]; //订单号
                 order.DateOrder = x[17];//订单创建时间
                 order.ShippingFees = x[4];//运费
-                order.AddressDetails =string.IsNullOrEmpty(x[39])? x[13]:x[39];//收获地址
+                order.AddressDetails =string.IsNullOrEmpty(x[39].Trim())? x[13]:x[39];//收获地址
                 order.CDeliveryAddress =order.AddressDetails;//收获地址
+
+                if (string.IsNullOrEmpty(order.CDeliveryAddress))
+                {
+                    resultMsg.Append(string.Format("订单号：{0}未获取到正确的收获地址",order.OrderId));
+                    LogHelper.Log(string.Format("订单号：{0}未获取到正确的收获地址", order.OrderId), null, LogHelper.LogType.Info);
+                }
 
                 //获取邮政编码
                 var postcode = "";
-                if (!string.IsNullOrEmpty(x[39]))
+                var postmatch = Regex.Match(x[13], regex);
+                postcode = postmatch.Value;
+                order.PostCode = postcode.Replace("(", "").Replace(")", "");
+                if (!string.IsNullOrEmpty(x[39]) || string.IsNullOrEmpty(order.PostCode))
                 {
-                    var cityCur = cityEntitys.FirstOrDefault(c =>
-                    {
-                        return order.AddressDetails != null && order.AddressDetails.IndexOf(c.Pc) == 0 &&
-                               !string.IsNullOrEmpty(c.PostCode);
-                    });
-                    postcode = cityCur != null ? string.Format("{0}0000", string.IsNullOrEmpty(cityCur.PostCode)?"":cityCur.PostCode.Substring(0, 2)) : "";
-                    resultMsg.AppendLine(string.IsNullOrEmpty(postcode)?"订单："+order.OrderId+"未找到邮编地址，请手动输入":"订单："+order.OrderId+"使用修改后的收获地址");
-                    order.PostCode = postcode;
+                    var postcode1 = GetPostCode(cityEntitys, order,ref resultMsg);
+                    order.PostCode = postcode1;
                 }
-                else
-                {
-                    var postmatch = Regex.Match(x[13], regex);
-                    postcode = postmatch.Value;
-                    order.PostCode = postcode.Replace("(", "").Replace(")", "");
-                }
-                
 
-                var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
-                var cityEntity = new CitiesEntity();
                 var iscon = false;
                 try
                 {
+                    var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
+                    var cityEntity = new CitiesEntity();
                     
                     if (addresss.Length >= 3)
                     {
@@ -132,6 +128,15 @@ namespace Business.DestMake
                         order.CCountyDistrict = "请手动补充"; //县/镇/区,中文名
                         order.ECountyDistrict = "请手动补充";
                      }
+
+                    //详细地址
+                    order.AddressDetails =
+                            TranslateHelper.YouDaoC2E(string.Join(" ",
+                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @"(\w{1,}\s){3}", "")));
+                    /*order.AddressDetails =
+                            TranslateHelper.YouDaoC2E(string.Join(" ",
+                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @".*\s", "")));*/
+                    //order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", Regex.Replace(order.CDeliveryAddress.Replace(postcode, ""), @".*\s", "")));//详细地址
                 }
                 catch (Exception e)
                 {
@@ -148,8 +153,7 @@ namespace Business.DestMake
                 order.SettlementAmount = x[8];//实际付款金额
                 order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName = TransNameToPin(x[12]);//收款人英文姓名
-                order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", Regex.Replace(order.CDeliveryAddress.Replace(postcode, ""), @".*\s", "")));//详细地址    
-                    
+
                 orders.Add(order);
             }
 #endregion
@@ -394,12 +398,24 @@ namespace Business.DestMake
             return result.Length>0?result.Remove(result.Length - 1, 1).ToString():"";
         }
 
-        /*protected List<string> RunNext(MakeBaseBusiness next,MakeDestEntity entity)
+        private string GetPostCode(List<CitiesEntity> cityEntitys, OrderEntity order, ref StringBuilder resultMsg)
         {
-            next.Application = this.Application;
-            next.DataList = next.DataList;
-            var result = next.CreateFile(entity);
-            return result;
-        }*/ 
+            var postcode = "";
+            var cityCur = cityEntitys.FirstOrDefault(c =>
+            {
+                return order.AddressDetails != null && order.AddressDetails.IndexOf(c.Pc) == 0 &&
+                       !string.IsNullOrEmpty(c.PostCode);
+            });
+            postcode = cityCur != null ? string.Format("{0}0000", string.IsNullOrEmpty(cityCur.PostCode) ? "" : cityCur.PostCode.Substring(0, 2)) : "";
+            if (!string.IsNullOrEmpty(order.PostCode))
+            {
+                resultMsg.AppendLine("订单：" + order.OrderId + "使用修改后的收获地址");
+            }
+            if (string.IsNullOrEmpty(postcode))
+            {
+                resultMsg.AppendLine("订单：" + order.OrderId + "未找到邮编地址，请手动输入");
+            }
+            return postcode;
+        }
     }
 }
