@@ -67,7 +67,15 @@ namespace Helper
                         List<string> strs=new List<string>();
                         foreach (Range cell in row.Columns)
                         {
-                            strs.Add(cell.Value!=null?cell.Value[Type.Missing].ToString():"");
+                            try
+                            {
+                                strs.Add(cell.Value != null ? cell.Value[Type.Missing].ToString() : "");
+                            }
+                            catch (Exception e)
+                            {
+                                LogHelper.Log(e.Message,e,LogHelper.LogType.Error);
+                                strs.Add("");
+                            }
                         }
                         dt.Add(strs);
                     }
