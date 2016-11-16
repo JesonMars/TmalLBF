@@ -184,5 +184,66 @@ namespace Business
             return true;
         }
 
+        public bool ImportDataTest(string filePath)
+        {
+            if (!File.Exists(filePath) && !ExcelHelper.IsExcel(filePath))
+            {
+                return false;
+            }
+
+            var excelHelper = new ExcelHelper(filePath);
+            var catalogues = excelHelper.GetAllSheetData();
+            excelHelper.Dispose();
+            if (catalogues != null && catalogues.Count > 0)
+            {
+                //first we need truncate cities table delete the old data
+                var catalogueDal = Factory.Instance().GetService<IConfirmDal>();
+                //then add the new city data
+                var newCatalogue = new List<ConfirmEntity>();
+                //catalogues.RemoveRange(0,7);
+                catalogues.RemoveAt(0);
+                foreach (var catalogue in catalogues)
+                {
+                    
+                    var catalogueOne = new ConfirmEntity();
+                    if (!string.IsNullOrEmpty(catalogue[0]))
+                    {
+                        try
+                        {
+                            catalogueOne.orderid = int.Parse(catalogue[0]);
+                            catalogueOne.createdate = DateTime.Parse(catalogue[1]);
+                            catalogueOne.createtime = DateTime.Parse(catalogue[11]);
+                            catalogueOne.opname = catalogue[3];
+                            catalogueOne.bstatus = catalogue[4];
+                            catalogueOne.tstatus = catalogue[5];
+                            catalogueOne.tcreatedate = catalogue[6];
+                            catalogueOne.tcreatetime = catalogue[12];
+                            catalogueOne.fopstatus = catalogue[8];
+                            catalogueOne.wastetime = string.IsNullOrEmpty(catalogue[9]) ? "" : catalogue[9];
+                            catalogueOne.isused = string.IsNullOrEmpty(catalogue[10]) ? -1 :  Int32.Parse(catalogue[10]);
+                            newCatalogue.Add(catalogueOne);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.Log(ex.Message, ex, LogHelper.LogType.Error);
+                        }
+                    }
+                }
+                try
+                {
+                    foreach (var confirmEntity in newCatalogue)
+                    {
+                        var result = catalogueDal.Insert(confirmEntity);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Log(ex.Message, ex, LogHelper.LogType.Error);
+                }
+
+            }
+
+            return true;
+        }
     }
 }

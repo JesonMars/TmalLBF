@@ -3,6 +3,7 @@ using System;
 using BusinessInterface;
 using Component;
 using System.Text.RegularExpressions;
+using Business;
 using log4net;
 
 namespace ComponentTest
@@ -45,6 +46,15 @@ namespace ComponentTest
             var regex = @"\([0-9a-zA-Z]{6,10}\)";
             var result=Regex.Match(str,regex);
             Assert.IsTrue(!string.IsNullOrEmpty(result.Value));
+        }
+
+        [TestMethod]
+        public void TestImportConfirm()
+        {
+            var str = @"\\vmware-host\Shared Folders\桌面\1231.xlsx";
+            var bus=new ImportBusiness();
+            var result = bus.ImportDataTest(str);
+            Assert.IsTrue(result);
         }
 
     }

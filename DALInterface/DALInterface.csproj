@@ -44,6 +44,7 @@
     <Compile Include="IArcancilDal.cs" />
     <Compile Include="ICatalogueDal.cs" />
     <Compile Include="ICityDal.cs" />
+    <Compile Include="IConfirmDal.cs" />
     <Compile Include="ICrudBase.cs" />
     <Compile Include="IFtpDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

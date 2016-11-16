@@ -4,42 +4,52 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
+using MySql.Data.MySqlClient;
 
 namespace Helper
 {
-    public class DalHelper
+    public class DalMysqlHelper
     {
         private static string _strCon = ConfigurationSettings.AppSettings.Get("dbConnStr");
-        private static SqlConnection _dbConnect = null;
+        private static MySqlConnection _dbConnect = null;
         private static readonly object obj=new object();
 
-        private static DbConnection GetCon()
+        private static MySqlConnection GetCon()
         {
             if (_dbConnect != null) return _dbConnect;
             lock (obj)
             {
                 if (_dbConnect != null) return _dbConnect;
-                _dbConnect = new SqlConnection(_strCon);
+                _dbConnect = new MySqlConnection(_strCon);
             }
             return _dbConnect;
         }
-        public static DataSet ExecuteDataSet(string sql,SqlParameterCollection parameterCollection)
+        public static DataSet ExecuteDataSet(string sql, List<MySqlParameter> parameterCollection)
         {
             DataSet ds=new DataSet();
             if (_dbConnect == null)
             {
-                DalHelper.GetCon();
+                DalMysqlHelper.GetCon();
             }
-            _dbConnect.Open();
-            using (SqlTransaction transaction=_dbConnect.BeginTransaction())
+            if (_dbConnect.State != ConnectionState.Open)
             {
-                SqlCommand sqlCommand = new SqlCommand(sql);
+                _dbConnect.Open();
+            }
+            using (MySqlTransaction transaction=_dbConnect.BeginTransaction())
+            {
+                MySqlCommand sqlCommand = new MySqlCommand(sql);
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = _dbConnect;
                 sqlCommand.Transaction = transaction;
-                sqlCommand.Parameters.Add(parameterCollection);
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                parameterCollection = parameterCollection ?? new List<MySqlParameter>();
+                foreach (var mySqlParameter in parameterCollection)
+                {
+                    sqlCommand.Parameters.Add(mySqlParameter);    
+                }
+                
+                MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
                 try
                 {
                     sqlDataAdapter.Fill(ds);
@@ -55,22 +65,29 @@ namespace Helper
             return ds;
         }
 
-        public static int ExecuteNonQuery(string sql, SqlParameterCollection parameterCollection)
+        public static int ExecuteNonQuery(string sql, List<MySqlParameter> parameterCollection)
         {
             int result= 0;
             if (_dbConnect == null)
             {
-                DalHelper.GetCon();
+                DalMysqlHelper.GetCon();
             }
-            _dbConnect.Open();
-            using (SqlTransaction transaction = _dbConnect.BeginTransaction())
+            if (_dbConnect.State != ConnectionState.Open)
             {
-                SqlCommand sqlCommand = new SqlCommand(sql);
+                _dbConnect.Open();
+            }
+            using (MySqlTransaction transaction = _dbConnect.BeginTransaction())
+            {
+                MySqlCommand sqlCommand = new MySqlCommand(sql);
                 
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = _dbConnect;
                 sqlCommand.Transaction = transaction;
-                sqlCommand.Parameters.Add(parameterCollection);
+                parameterCollection = parameterCollection ?? new List<MySqlParameter>();
+                foreach (var mySqlParameter in parameterCollection)
+                {
+                    sqlCommand.Parameters.Add(mySqlParameter);
+                }
                 try
                 {
                     result=sqlCommand.ExecuteNonQuery();
@@ -85,5 +102,6 @@ namespace Helper
 
             return result;
         }
+    
     }
 }

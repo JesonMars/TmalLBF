@@ -8,6 +8,7 @@ using System.Text;
 using DALInterface;
 using Entity;
 using Helper;
+using MySql.Data.MySqlClient;
 
 namespace DAL
 {
@@ -111,7 +112,7 @@ namespace DAL
             sqlBuilder.Remove(sqlBuilder.Length-1,1).Append(")");
             sqlValue.Remove(sqlValue.Length - 1, 1).Append(")");
             var sql = string.Format("{0} {1}", sqlBuilder, sqlValue);
-            var result = DalAccessHelper.ExecuteNonQuery(sql, null);
+            var result = DalMysqlHelper.ExecuteNonQuery(sql, null);
             return result;
         }
 

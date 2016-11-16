@@ -44,6 +44,7 @@
     <Compile Include="ArcancilEntity.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="CitiesEntity.cs" />
+    <Compile Include="ConfirmEntity.cs" />
     <Compile Include="DestFileEntity.cs" />
     <Compile Include="FtpConfigEntity.cs" />
     <Compile Include="CatalogueEntity.cs" />
