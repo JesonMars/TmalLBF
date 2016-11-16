@@ -68,5 +68,14 @@ namespace Helper
             var juhezidian = GetAppSetting("juhezidian");
             return juhezidian.Replace("|", "&");
         }
+        public static string GetCounty() {
+            var juhezidian = GetAppSetting("county");
+            return juhezidian.Replace("'", "\"");
+        }
+        public static string GetHanZi2PinYinUrl()
+        {
+            var juhezidian = GetAppSetting("hanzi2pinyin");
+            return juhezidian.Replace("|", "&");
+        }
     }
 }

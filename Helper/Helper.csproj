@@ -82,6 +82,7 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="IDalHelper.cs" />
     <Compile Include="JsonHelper.cs" />
+    <Compile Include="LBFDestHelper.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

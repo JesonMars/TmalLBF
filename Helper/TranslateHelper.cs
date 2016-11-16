@@ -57,5 +57,83 @@ namespace Helper
 
             return result;
         }
+
+        public static string HanZi2PinYin(string data)
+        {
+            string result = "";
+            try
+            {
+                var url = ConfigHelper.GetHanZi2PinYinUrl();
+                url += data;
+                var response = HttpHelper.SendGetRequest(url, null, Encoding.UTF8, Encoding.UTF8);
+
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var jsonhelper = new JsonHelper();
+                    var entity = jsonhelper.JsonDeserialize<HanZi2PinYinEntity>(response);
+                    result = (entity != null && entity.showapi_res_body != null) ? entity.showapi_res_body.data : "";
+                }
+            }
+            catch (Exception exception)
+            {
+                LogHelper.Log(exception.Message, exception, LogHelper.LogType.Error);
+            }
+
+            return result;
+        }
+
+        public static string JuHeZiDianBetch(string data)
+        {
+            StringBuilder result = new StringBuilder();
+            if (string.IsNullOrEmpty(data))
+            {
+                return result.ToString();
+            }
+            try
+            {
+                var getJuheZiDianUrl = ConfigHelper.GetJuHeZiDianUrl();
+                data.ToList().ForEach(x =>
+                {
+                    var url = getJuheZiDianUrl + x;
+                    var response = HttpHelper.SendGetRequest(url, null, Encoding.UTF8, Encoding.UTF8);
+
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        var jsonhelper = new JsonHelper();
+                        var entity = jsonhelper.JsonDeserialize<JuHeZiDianEntity>(response);
+                        result.Append(string.Format("{0} ", ((entity != null && entity.result != null) ? entity.result.py : "")));
+                    }
+                });
+            }
+            catch (Exception exception)
+            {
+                LogHelper.Log(exception.Message, exception, LogHelper.LogType.Error);
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// 地区翻译为拼音
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string TransCountyToPinYin(string data)
+        {
+            //获取区、县、镇
+            var countyStr = ConfigHelper.GetCounty();
+            var jsonHelper = new JsonHelper();
+            var countyDics = jsonHelper.JsonDeserialize<Dictionary<string, string>>(countyStr);
+
+            var last = data.Last();
+            var lastEn = countyDics.FirstOrDefault(x => x.Value == last.ToString());
+            if (lastEn.Key!=(null)) {
+                data = data.Substring(0,data.Length - 1);
+            }
+            var pinyin = TranslateHelper.HanZi2PinYin(data);
+            pinyin += lastEn.Key == (null) ? "" : string.Format(" {0}", lastEn.Key);
+
+            return pinyin;
+        }
     }
 }
