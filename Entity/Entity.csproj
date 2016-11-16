@@ -55,6 +55,7 @@
     <Compile Include="ProductsEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="TransCountyToPinYinEntity.cs" />
     <Compile Include="YouDaoTransEntity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
