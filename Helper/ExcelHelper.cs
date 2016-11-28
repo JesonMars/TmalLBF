@@ -158,6 +158,7 @@ namespace Helper
             var workbook=workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             var worksheet =(Worksheet) workbook.Worksheets[1];
             worksheet.Name = sheetname;
+            worksheet.Activate();
             var result = true;
             if (data != null)
             {
@@ -166,6 +167,11 @@ namespace Helper
                     for (int j = 1; j <= data[i-1].Count; j++)
                     {
                         worksheet.Cells[i, j] = data[i-1][j-1];
+                        if (j == 13 && !string.IsNullOrEmpty(data[i - 1][j - 1]) && data[i - 1][j - 1].Contains(","))
+                        {
+                            Range range = worksheet.Range[worksheet.Cells[i, j], worksheet.Cells[i, j]];
+                            range.Interior.Color = XlRgbColor.rgbLightGreen;
+                        }
                     }
                 }
                 worksheet.SaveAs(filename, fileFormat, Type.Missing, Type.Missing, Type.Missing, Type.Missing,Type.Missing, Type.Missing, Type.Missing, Type.Missing);

@@ -165,7 +165,10 @@ namespace Business.DestMake
                 order.SettlementAmount = x[8];//实际付款金额
                 order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName =lbfDestHelper.TransNameToPin(x[12]);//收款人英文姓名
-
+                if (!string.IsNullOrEmpty(order.ERecipientName) && order.ERecipientName.Contains(","))
+                {
+                    resultMsg.AppendLine(string.Format("订单：{0},姓名含有多音字！", order.OrderId));
+                }
                 orders.Add(order);
             }
 #endregion
