@@ -64,7 +64,7 @@ namespace Helper
             try
             {
                 var url = ConfigHelper.GetHanZi2PinYinUrl();
-                url += data;
+                url = string.Format(url, DateTime.Now.ToString("yyyyMMddHHmmss"), data);
                 var response = HttpHelper.SendGetRequest(url, null, Encoding.UTF8, Encoding.UTF8);
 
                 if (!string.IsNullOrEmpty(response))
@@ -118,22 +118,35 @@ namespace Helper
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static string TransCountyToPinYin(string data)
+        public static TransCountyToPinYinEntity TransCountyToPinYin(string data)
         {
+            var result=new TransCountyToPinYinEntity() { 
+                    IsNormal=true,PinYin=""
+                };
+            if (string.IsNullOrEmpty(data)){
+                result.IsNormal = false;
+                return result;
+            }
             //获取区、县、镇
             var countyStr = ConfigHelper.GetCounty();
             var jsonHelper = new JsonHelper();
             var countyDics = jsonHelper.JsonDeserialize<Dictionary<string, string>>(countyStr);
-
+            
             var last = data.Last();
             var lastEn = countyDics.FirstOrDefault(x => x.Value == last.ToString());
             if (lastEn.Key!=(null)) {
                 data = data.Substring(0,data.Length - 1);
             }
             var pinyin = TranslateHelper.HanZi2PinYin(data);
-            pinyin += lastEn.Key == (null) ? "" : string.Format(" {0}", lastEn.Key);
+            if (!string.IsNullOrEmpty(pinyin)) {
+                pinyin += lastEn.Key == (null) ? "" : string.Format(" {0}", lastEn.Key);
+            }
+            if (lastEn.Key == null) {
+                result.IsNormal = false;
+            }
+            result.PinYin = pinyin;
 
-            return pinyin;
+            return result;
         }
     }
 }

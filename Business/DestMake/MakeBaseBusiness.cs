@@ -116,8 +116,6 @@ namespace Business.DestMake
                         cityEntity =lbfDestHelper.GetAddressByPostCode(order, cityEntitys);
                         order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
                         order.EProvinceAutonomousRegion = cityEntity.Pe;
-                        //判断是否为直辖市
-                        order.ECountyDistrict = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) && cityEntity.Cityc == order.CCountyDistrict ? cityEntity.Citye : TranslateHelper.TransCountyToPinYin(order.CCountyDistrict);//县/镇/区,英文名
                     }
                     else
                     {
@@ -127,15 +125,26 @@ namespace Business.DestMake
                         order.Country ="CN"; //国家
                         order.ECity = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) ? cityEntity.Pe : cityEntity.Citye;
                         order.EProvinceAutonomousRegion = cityEntity.Pe;
-                        order.CCountyDistrict = "请手动补充"; //县/镇/区,中文名
-                        order.ECountyDistrict = "请手动补充";
-                        resultMsg.AppendLine(string.Format("订单号：{0}没有搜索到County_District,请手动在文件中填充",order.OrderId));
+                        order.CCountyDistrict = ""; //县/镇/区,中文名
                      }
+                    //判断是否为直辖市
+                    var transCounty=TranslateHelper.TransCountyToPinYin(order.CCountyDistrict);
+                    order.ECountyDistrict = CityHelper.IsMunicipality(order.CProvinceAutonomousRegion, order.CCity) && cityEntity.Cityc == order.CCountyDistrict ? cityEntity.Citye : transCounty.PinYin;//县/镇/区,英文名
+                    if (string.IsNullOrEmpty(order.ECountyDistrict))
+                    {
+                        resultMsg.AppendLine(string.Format("订单号：{0}没有搜索到County_District,请手动在文件中填充", order.OrderId));
+                        order.ECountyDistrict = "请手动补充";
+                    }
+                    if (!transCounty.IsNormal)
+                    {
+                        resultMsg.AppendLine(string.Format("订单号：{0}的County_District地址非市/区/县/镇，请手动修改", order.OrderId));
+                    }
 
                     //详细地址
-                    order.AddressDetails =
+                    order.AddressDetails = TranslateHelper.YouDaoC2E(CityHelper.GetAddress(order.CDeliveryAddress));
+                    /*order.AddressDetails =
                             TranslateHelper.YouDaoC2E(string.Join(" ",
-                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @"(\w{1,}\s){3}", "")));
+                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @"(\w{1,}\s){3}", "")));*/
                     /*order.AddressDetails =
                             TranslateHelper.YouDaoC2E(string.Join(" ",
                                 Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @".*\s", "")));*/
@@ -156,7 +165,10 @@ namespace Business.DestMake
                 order.SettlementAmount = x[8];//实际付款金额
                 order.CRecipientName = x[12];//收款人中文姓名
                 order.ERecipientName =lbfDestHelper.TransNameToPin(x[12]);//收款人英文姓名
-
+                if (!string.IsNullOrEmpty(order.ERecipientName) && order.ERecipientName.Contains(","))
+                {
+                    resultMsg.AppendLine(string.Format("订单：{0},姓名含有多音字！", order.OrderId));
+                }
                 orders.Add(order);
             }
 #endregion

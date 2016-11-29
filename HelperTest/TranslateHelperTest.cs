@@ -52,7 +52,7 @@ namespace HelperTest
         {
             var data = "海淀黄庄";
             var result = TranslateHelper.TransCountyToPinYin(data);
-            Assert.IsFalse(result=="");
+            Assert.IsFalse(result.PinYin=="");
         }
 
         [TestMethod]
@@ -69,6 +69,14 @@ namespace HelperTest
             var data = "Institut Caméane";
             var result = data.ToUpper();
             Assert.IsFalse(result == "");
+        }
+
+        [TestMethod]
+        public void TestGetAddress()
+        {
+            var data = "上海 上海市 浦东新区 唐镇创新西路333号 唐丰苑 27号楼801 DAx(450016)";
+            var result = CityHelper.GetAddress(data);
+            Assert.IsFalse(result=="");
         }
 
     }
