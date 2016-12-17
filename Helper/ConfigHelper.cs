@@ -72,6 +72,11 @@ namespace Helper
             var juhezidian = GetAppSetting("county");
             return juhezidian.Replace("'", "\"");
         }
+        public static string GetFanYiDics()
+        {
+            var juhezidian = GetAppSetting("fanyidics");
+            return juhezidian.Replace("'", "\"");
+        }
         public static string GetHanZi2PinYinUrl()
         {
             var juhezidian = GetAppSetting("hanzi2pinyin");

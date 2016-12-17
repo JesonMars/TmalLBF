@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Entity;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
 
@@ -151,7 +152,7 @@ namespace Helper
             return dt;
         }
 
-        public bool ExportExcel(string filename,List<List<string>> data,string sheetname,XlFileFormat fileFormat)
+        public bool ExportExcel(string filename,List<List<string>> data,string sheetname,XlFileFormat fileFormat,List<ExcelColorEntity> excelColorEntities )
         {
             var xlApp = new Application();
             var workbooks = xlApp.Workbooks;
@@ -167,12 +168,12 @@ namespace Helper
                     for (int j = 1; j <= data[i-1].Count; j++)
                     {
                         worksheet.Cells[i, j] = data[i-1][j-1];
-                        if (j == 13 && !string.IsNullOrEmpty(data[i - 1][j - 1]) && data[i - 1][j - 1].Contains(","))
-                        {
-                            Range range = worksheet.Range[worksheet.Cells[i, j], worksheet.Cells[i, j]];
-                            range.Interior.Color = XlRgbColor.rgbLightGreen;
-                        }
                     }
+                }
+                foreach (var entity in excelColorEntities)
+                {
+                    Range range = worksheet.Range[worksheet.Cells[entity.RowIndex, entity.ColumnIndex], worksheet.Cells[entity.RowIndex, entity.ColumnIndex]];
+                    range.Interior.Color = entity.XlRgbColor;
                 }
                 worksheet.SaveAs(filename, fileFormat, Type.Missing, Type.Missing, Type.Missing, Type.Missing,Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 //worksheet.SaveAs(filename, fileFormat, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,Type.Missing,Type.Missing,Type.Missing);

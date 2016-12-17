@@ -29,6 +29,7 @@ namespace Business
                     var xlsxBusi = new MakeXlsxBusiness();
                     xlsxBusi.DataList = csvBusi.DataList;
                     xlsxBusi.FoldPath = csvBusi.FoldPath;
+                    xlsxBusi.ExcelColorEntities = csvBusi.ExcelColorEntities;
                     xlsxBusi.Make(entity);
                 }
                 if (entity.IsMakeXls)
@@ -36,6 +37,7 @@ namespace Business
                     var xlsBusi = new MakeXlsBusiness();
                     xlsBusi.DataList = csvBusi.DataList;
                     xlsBusi.FoldPath = csvBusi.FoldPath;
+                    xlsBusi.ExcelColorEntities = csvBusi.ExcelColorEntities;
                     xlsBusi.Make(entity);
                 }
             }

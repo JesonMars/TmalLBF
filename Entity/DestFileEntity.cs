@@ -91,6 +91,10 @@ namespace Entity
         /// </summary>
         public string AddressDetails { get; set; }
         /// <summary>
+        /// 修改后的收货地址
+        /// </summary>
+        public string ModifiedAddressDetails { get; set; }
+        /// <summary>
         /// 收件人电话号码	需要设置成text格式，而不是数字格式，手机号码以“1”开头
         /// </summary>
         public string ConsigneePhoneNumber{get;set;}

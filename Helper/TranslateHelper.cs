@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.ServiceModel.Channels;
 using System.Text;
+using System.Threading;
 using Entity;
 
 namespace Helper
@@ -71,8 +72,10 @@ namespace Helper
                 {
                     var jsonhelper = new JsonHelper();
                     var entity = jsonhelper.JsonDeserialize<HanZi2PinYinEntity>(response);
+                    //LogHelper.Log(response, null, LogHelper.LogType.Info);
                     result = (entity != null && entity.showapi_res_body != null) ? entity.showapi_res_body.data : "";
                 }
+                Thread.Sleep(500);
             }
             catch (Exception exception)
             {
@@ -127,11 +130,19 @@ namespace Helper
                 result.IsNormal = false;
                 return result;
             }
+
             //获取区、县、镇
             var countyStr = ConfigHelper.GetCounty();
+            var fanyidicsstr = ConfigHelper.GetFanYiDics();
             var jsonHelper = new JsonHelper();
+            var fanyidics = jsonHelper.JsonDeserialize<Dictionary<string, string>>(fanyidicsstr);
+            if (fanyidics.ContainsKey(data))
+            {
+                result.PinYin = fanyidics[data];
+                return result;
+            }
+
             var countyDics = jsonHelper.JsonDeserialize<Dictionary<string, string>>(countyStr);
-            
             var last = data.Last();
             var lastEn = countyDics.FirstOrDefault(x => x.Value == last.ToString());
             if (lastEn.Key!=(null)) {

@@ -17,6 +17,7 @@ namespace Business.DestMake
         public MakeBaseBusiness(){}
         public string FoldPath { get; set; }
         public List<List<string>> DataList { get; set; }
+        public List<ExcelColorEntity> ExcelColorEntities { get; set; }
         public abstract string Extension { get; }
 
         public string FileName
@@ -81,6 +82,7 @@ namespace Business.DestMake
                 order.DateOrder = x[17];//订单创建时间
                 order.ShippingFees = x[4];//运费
                 order.AddressDetails =string.IsNullOrEmpty(x[39].Trim())? x[13]:x[39];//收获地址
+                order.ModifiedAddressDetails = x[39].Trim();
                 order.CDeliveryAddress =order.AddressDetails;//收获地址
 
                 if (string.IsNullOrEmpty(order.CDeliveryAddress))
@@ -103,7 +105,7 @@ namespace Business.DestMake
                 var iscon = false;
                 try
                 {
-                    var addresss = Regex.Split(order.AddressDetails, "\\s{1,}");
+                    var addresss = Regex.Split(order.AddressDetails, "\\s+");
                     var cityEntity = new CitiesEntity();
                     
                     if (addresss.Length >= 3)
@@ -142,13 +144,6 @@ namespace Business.DestMake
 
                     //详细地址
                     order.AddressDetails = TranslateHelper.YouDaoC2E(CityHelper.GetAddress(order.CDeliveryAddress));
-                    /*order.AddressDetails =
-                            TranslateHelper.YouDaoC2E(string.Join(" ",
-                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @"(\w{1,}\s){3}", "")));*/
-                    /*order.AddressDetails =
-                            TranslateHelper.YouDaoC2E(string.Join(" ",
-                                Regex.Replace(Regex.Replace(order.CDeliveryAddress, @"\([0-9]*\)", ""), @".*\s", "")));*/
-                    //order.AddressDetails = TranslateHelper.YouDaoC2E(string.Join(" ", Regex.Replace(order.CDeliveryAddress.Replace(postcode, ""), @".*\s", "")));//详细地址
                 }
                 catch (Exception e)
                 {
@@ -242,6 +237,7 @@ namespace Business.DestMake
                     destFileEntity.CountyDistrict = order.ECountyDistrict;
                     destFileEntity.PostCode = order.PostCode;
                     destFileEntity.AddressDetails = order.AddressDetails;
+                    destFileEntity.ModifiedAddressDetails = order.ModifiedAddressDetails;
                     destFileEntity.CFullProductName = x.ProductName;
                     destFileEntity.CRecipientName = order.CRecipientName;
                     destFileEntity.ERecipientName = order.ERecipientName;
@@ -272,6 +268,8 @@ namespace Business.DestMake
 
 #region 加载最终数据
             var datalist=new List<List<string>>();
+            var excelColorEnities=new List<ExcelColorEntity>();
+            int flag = 2;
             var destHead = ConfigHelper.GetDestFileHead();
             datalist.Add(destHead);
             (from a in result orderby a.FrenchCompanyName,a.Brand,a.DateOrder select a).ToList().ForEach(r =>
@@ -302,7 +300,28 @@ namespace Business.DestMake
                 data.Add(r.CDeliveryAddress);
                 data.Add(string.Format("{0}", r.ConsigneePhoneNumber));
                 datalist.Add(data);
+                //检验名字是否有多音字
+                if (!string.IsNullOrEmpty(r.ERecipientName) && r.ERecipientName.Contains(","))
+                {
+                    var excelColorEnity=new ExcelColorEntity();
+                    excelColorEnity.RowIndex = flag;
+                    excelColorEnity.ColumnIndex = 13;
+                    excelColorEnity.XlRgbColor = XlRgbColor.rgbLightGreen;
+                    excelColorEnities.Add(excelColorEnity);
+                }
+                //检验是否使用了修改后的收货地址
+                if (!string.IsNullOrEmpty(r.ModifiedAddressDetails))
+                {
+                    var excelColorEnity = new ExcelColorEntity();
+                    excelColorEnity.RowIndex = flag;
+                    excelColorEnity.ColumnIndex = 1;
+                    excelColorEnity.XlRgbColor = XlRgbColor.rgbYellow;
+                    excelColorEnities.Add(excelColorEnity);
+                    resultMsg.AppendLine(string.Format("订单号：{0}修改了收货地址，请在导出文件内修改", r.OrderId));
+                }
+                flag++;
             });
+            this.ExcelColorEntities = excelColorEnities;
             this.DataList = datalist;
 #endregion
 
@@ -333,7 +352,7 @@ namespace Business.DestMake
         {
             var excelHelper = new ExcelHelper();
             var filename = string.Format(@"{0}\{1}.{2}", FoldPath, ConfigHelper.GetDestFileName(), Extension);
-            excelHelper.ExportExcel(filename, new List<List<string>>(), "Expected file order",XlFileFormat.xlExcel8);
+            excelHelper.ExportExcel(filename, new List<List<string>>(), "Expected file order",XlFileFormat.xlExcel8,this.ExcelColorEntities);
             return filename;
         }
 

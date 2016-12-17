@@ -49,6 +49,10 @@ namespace Entity
         public string ECountyDistrict { get; set; }
         public string CCountyDistrict { get; set; }
         public string AddressDetails { get; set; }
+        /// <summary>
+        /// 修改后的收货地址
+        /// </summary>
+        public string ModifiedAddressDetails { get; set; }
         public string ConsigneePhoneNumber { get; set; }
         public string CDeliveryAddress { get; set; }
 
