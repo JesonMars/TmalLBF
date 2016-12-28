@@ -253,9 +253,11 @@ namespace Business.DestMake
                 var order = orders.FirstOrDefault(x => x.OrderId == destFileEntities.FirstOrDefault().OrderId);
                 var settleamount = MathHelper.Parse(order.SettlementAmount);
                 var shippingFee = MathHelper.Parse(order.ShippingFees);
+                var allQuantity = destFileEntities.Sum(d => d.Quantity);    //订单下的所有产品订购总数
                 var salePrice = destFileEntities.Sum(d => d.PricePerUnit * d.Quantity);
                 var count = destFileEntities.Count();
-                var couponsRewards = decimal.Round((salePrice - (settleamount-shippingFee)) / count, 2);
+                //var couponsRewards = decimal.Round((salePrice - (settleamount-shippingFee)) / count, 2);
+                var couponsRewards = decimal.Round((salePrice - (settleamount - shippingFee)) / allQuantity, 2);
                 foreach (var destFileEntity in destFileEntities)
                 {
                     destFileEntity.CouponsRewards = couponsRewards;
